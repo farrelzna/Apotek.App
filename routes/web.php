@@ -27,12 +27,15 @@ use App\Http\Controllers\MedicineController;
 
 Route::get('/home', function () {
     return view('welcome');
-})->name('welcome'); 
+})->name('welcome');
 
 //      url : kebab case, name: snack case , controller function : camel case 
-Route::get('/landing-page', [LandingPageController :: class,'index']) -> name('landing_page');
+Route::get('/landing-page', [LandingPageController::class, 'index'])->name('landing_page');
 
 //      meneapilkan/mengelola data medicines
-Route::get('/medicines', [MedicineController :: class,'index']) -> name('medicines');
-Route::get('/medicines/add', [MedicineController :: class,'create']) -> name('medicines.add');
-Route::post('/medicines/add', [MedicineController :: class,'store']) -> name('medicines.store.add');
+Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
+Route::get('/medicines/add', [MedicineController::class, 'create'])->name('medicines.add');
+Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medicines.store.add');
+//      (id) : path dinamis, nilainya akan berubah ubah (harus diisi ketika , mengakses route) -> ketika akses di blade maka aknan menjadi href="{{ route('nama_rout, $isipathdinamis') }}"
+//      fungsi path dinamis : spesifikasi data yang akan dproses
+Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.delete'); 

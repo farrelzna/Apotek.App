@@ -2,7 +2,7 @@
 
 @section('content-dinamis')
 
-    <div class="m-auto my-6 w-auto p-4" style="width: 65%;">
+    <div class="mt-5 m-auto my-6 w-auto p-4" style="width: 65%;">
         <form action="{{ route('medicines.store.add') }}" method="POST" class="p-4 mt-2"
             style="border-radius: 10px; box-shadow:-20px -20px 60px #bebebe;">
             @if (Session::get('failed'))
@@ -33,26 +33,27 @@
             @csrf
             <div class="form-group">
                 <label for="name" class="form-label">Nama Obat</label>
-                <input type="text" name="name" id="name" class="form-control">
+                {{-- old('name') : mengambil isi input data dari form sebelum di submit --}}
+                <input type="text" name="name" id="name" class="form-control" value={{ old('name') }}>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label for="type" class="form-label">Tipe Obat</label>
                 <select name="type" id="type" class="form-control">
                     <option hidden selected disabled>Opsi</option>
-                    <option value="Tablet">Tablel</option>
-                    <option value="Sirup">Sirup</option>
-                    <option value="Kapsul">Kapsul</option>
-                </select>
+                    <option value="Tablet" {{ old('type') == 'Tablet' ? 'selected' : '' }}>Tablel</option>
+                    <option value="Sirup" {{ old('type') == 'Sirup' ? 'selected' : '' }}>Sirup</option>
+                    <option value="Kapsul" {{ old('type') == 'Kapsul' ? 'selected' : '' }}>Kapsul</option>
+                </select >
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label for="price" class="form-label">Harga Obat</label>
-                <input type="number" name="price" id="price" class="form-control">
+                <input type="number" name="price" id="price" class="form-control" value{{ old('price') }}>
             </div>
-            <div class="form-group">
+            <div class="form-group mt-3">
                 <label for="stock" class="form-label">Stok Obat</label>
-                <input type="number" name="stock" id="stock" class="form-control">
+                <input type="number" name="stock" id="stock" class="form-control" value={{ old('stock') }}>
             </div>
-            <button class="btn btn-block btn-success">Kirim Data</button>
+            <button class="btn btn-block btn-success mt-4">Kirim Data</button>
         </form>
     </div>
 

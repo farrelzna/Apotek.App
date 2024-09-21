@@ -23,9 +23,12 @@ class MedicineController extends Controller
         //  $medicines = Medicine::all()->simplePaginate(5);
         //  where('nama_field_migration, 'operator', 'value') : mencari
         //  operator ->=, <, >, <-, <=, >=, !=, like 
-        // '%' depan = mencari kata belakang
-        // '%' belakanag = mencari kata depan
-        $medicines = Medicine::where('name', 'like', '%' . $request->search . '%')->simplePaginate(5);
+        //  '%' depan = mencari kata belakang
+        //  '%' belakanag = mencari kata depan
+        //  orderby : mengurutkan berdasarkan field migration terntentu
+        //  ASC : ascending (kecil ke besar);
+        //  DSC : descending (besar ke kecil);
+        $medicines = Medicine::where('name', 'like', '%' . $request->search . '%')->orderBy('name', 'asc')->simplePaginate(5);
 
         //compact : mengirim data ke blade : compact('namavariable')
         return view('medicine.index', compact('medicines'));
@@ -49,9 +52,14 @@ class MedicineController extends Controller
 
         $request->validate([
             'type' => 'required',
-            'name' => 'required',
-            'price' => 'required',
+            'name' => 'required|min:5|max:20',
+            'price' => 'required|numeric',
             'stock' => 'required',
+        ], [
+            'type.required' => 'TIPE HARUS DI ISI !',
+            'name.required' => 'NAMA HARUS DI ISI !',
+            'price.required' => 'HARGA HARUS DI ISI !',
+            'stock.required' => 'STOCK HARUS DI ISI !',
         ]);
 
         //  menambah data
@@ -100,6 +108,12 @@ class MedicineController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //  menghapus data, mencari dengan where, lalu hapus dengan delete()
+        $proses = Medicine::where('id', $id)->delete();
+        if ($proses) {
+            return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        }   else {
+            return redirect()->back()->with('failed', 'Data Gagal Dihapus');
+        }
     }
 }
