@@ -1,0 +1,30 @@
+.hero {
+    background-image: url('../img/3.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 100px 0;
+    text-align: center;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 4rem;
+    font-weight: bold;
+}
+
+.features-icon {
+    font-size: 4rem;
+    color: #0d6efd;
+}
+
+.about-section img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+footer {
+    background-color: #323232;
+    padding: 20px;
+    text-align: center;
+    color: white;
+}

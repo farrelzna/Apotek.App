@@ -8,54 +8,138 @@
 
 @section('content-dinamis')
 
-    {{-- header --}}
-
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="true" href="#">Active</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                </li>
-            </ul>
+     <!-- Hero Section -->
+     <section class="hero">
+        <div class="container">
+            <h1>Aplikasi Apotek Modern</h1>
+            <p class="lead">Kelola apotek Anda dengan mudah dan efisien, dari stok obat hingga transaksi harian.</p>
+            <a href="{{ route('medicines') }}" class="btn btn-primary btn-lg {{ Route::is('medicines') ? 'active' : '' }} ">Mulai Sekarang</a>
         </div>
-        <div class="row p-3 mx-auto">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
+    </section>
+
+    <!-- About Us Section -->
+
+    <section class="about-section py-5 bg-ligh mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <img src="asset/img/2.jpg" alt="About Us Image">
+                </div>
+                <div class="col-md-6">
+                    <h2 class="text-nowrap bg-body-secondary border" style="width: 4rem;">Tentang Kami</h2>
+                    <p>Kami adalah penyedia solusi manajemen apotek modern yang dirancang untuk meningkatkan efisiensi dan produktivitas operasional apotek Anda. Dengan pengalaman bertahun-tahun di industri, kami menyediakan platform yang aman, cepat, dan mudah digunakan.</p>
+                    <p>Visi kami adalah untuk mendigitalisasi layanan kesehatan melalui inovasi teknologi, memberikan aksesibilitas dan kenyamanan bagi para apoteker dan pasien mereka.</p>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Special title treatment</h5>
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div>
+        </div>
+    </section>
+
+    <!-- Testimoni Section -->
+
+    <section class="py-5">
+        <div class="container text-center">
+            <h2 class="mb-5">Testimoni Pengguna</h2>
+            <div class="row mt-5">
+                <div class="col-md-4 p-3 mb-2">
+                    <blockquote class="blockquote">
+                        <p>"ApotekApp telah sangat membantu kami dalam mengelola stok dan pelanggan. Sangat user-friendly dan cepat!"</p>
+                        <footer class="blockquote-footer mt-2">Andi, Apotek Sejahtera</footer>
+                    </blockquote>
                 </div>
-            </div>
-            <div class="card-sm-6 mt-3  ">
-                <div class="card-header">
-                    Quote
+                <div class="col-md-4 p-3 mb-2">
+                    <blockquote class="blockquote">
+                        <p>"Dengan ApotekApp, pengelolaan transaksi menjadi jauh lebih cepat, efisien, dan aman. Sangat direkomendasikan!"</p>
+                        <footer class="blockquote-footer mt-3">Rina, Apotek Keluarga</footer>
+                    </blockquote>
                 </div>
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>A well-known quote, contained in a blockquote element.</p>
-                        <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source
-                                Title</cite></footer>
+                <div class="col-md-4 p-3 mb-2">
+                    <blockquote class="blockquote">
+                        <p>"Aplikasi ApotekApp ini sangat membantu bisnis kami menjadi lebih efisien dan terorganisir. Kami sangat senang!"</p>
+                        <footer class="blockquote-footer mt-3">Budi, Apotek Maju</footer>
                     </blockquote>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- FAQ Section -->
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center">Pertanyaan yang Sering Diajukan (FAQ)</h2>
+            <div class="accordion mt-4" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Bagaimana cara mendaftar di ApotekApp?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Anda dapat mendaftar dengan mengklik tombol "Mulai Sekarang" di halaman ini dan mengisi informasi yang dibutuhkan.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Apakah data saya aman?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Ya, kami menggunakan enkripsi tingkat tinggi untuk memastikan keamanan data apotek dan pelanggan Anda.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Bagaimana cara menghubungi layanan pelanggan?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Anda bisa menghubungi kami melalui formulir kontak di bawah ini atau langsung melalui email kami.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+
+    <section class="py-5">
+        <div class="container text-center">
+            <h2>Fitur Utama</h2>
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <i class="bi bi-bag-check-fill features-icon"></i>
+                    <h4 class="mt-3">Kelola Stok Obat</h4>
+                    <p>Memudahkan pemantauan stok obat dengan sistem otomatis yang terintegrasi.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="bi bi-people-fill features-icon"></i>
+                    <h4 class="mt-3">Manajemen Pelanggan</h4>
+                    <p>Mengelola data pelanggan dengan mudah dan memberikan layanan yang lebih personal.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="bi bi-cash-stack features-icon"></i>
+                    <h4 class="mt-3">Transaksi Cepat</h4>
+                    <p>Sistem pembayaran dan transaksi yang cepat serta aman untuk kemudahan Anda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 ApotekApp. All rights reserved.</p>
+            <a href="#" class="text-decoration-none">Kebijakan Privasi</a> | <a href="#" class="text-decoration-none">Syarat dan Ketentuan</a>
+        </div>
+    </footer>
     
 @endsection

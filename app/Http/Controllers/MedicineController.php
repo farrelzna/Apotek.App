@@ -58,6 +58,9 @@ class MedicineController extends Controller
         ], [
             'type.required' => 'TIPE HARUS DI ISI !',
             'name.required' => 'NAMA HARUS DI ISI !',
+            'name.min' => 'NAMA TERLALU PENDEK !',
+            'name.max' => 'NAMA TERLALU PANJANG !',
+            'price.numeric' => 'HARGA HARUS ANGKA !',
             'price.required' => 'HARGA HARUS DI ISI !',
             'stock.required' => 'STOCK HARUS DI ISI !',
         ]);
@@ -75,7 +78,7 @@ class MedicineController extends Controller
         if ($proses) {
             return redirect()->route('medicines')->with('success', 'Data Berhasil Ditambahkan');
         } else {
-            return redirect()->route('medicines')->with('failed', 'Data Gagal Ditambahkan');
+            return redirect()->route('medicines.add')->with('failed', 'Data Gagal Ditambahkan');
         }
     }
 
@@ -90,17 +93,55 @@ class MedicineController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        //ambil data yang mau di edit sesuai dengan id (id)
+        //  where('id', $id) : mencari data sesuai id
+        //  first() : mengambil data pertama
+        $medicine = Medicine::where('id', $id)->first();
+        //  compact : mengirim data ke blade : compact('namavariable')
+        return view('medicine.edit', compact('medicine'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'type' => 'required',
+            'name' => 'required|min:5|max:20',
+            'price' => 'required|numeric',
+            'stock' => 'required',
+        ], [
+            'type.required' => 'TIPE HARUS DI ISI !',
+            'name.required' => 'NAMA HARUS DI ISI !',
+            'name.min' => 'NAMA TERLALU PENDEK !',
+            'name.max' => 'NAMA TERLALU PANJANG !',
+            'price.numeric' => 'HARGA HARUS ANGKA !',
+            'price.required' => 'HARGA HARUS DI ISI !',
+            'stock.required' => 'STOCK HARUS DI ISI !',
+        ]);
+
+        //ambli data sebelumnya, cek isi input stock jangan lebi kecil dari stock sebelumnya
+        $medicineBefore = Medicine::where('id', $id)->first();
+        if ((int) $request->stock < (int) $medicineBefore->stock) {
+            return redirect()->back()->with('failed', 'STOCK TIDAK BOLEH KECIL DARI STOCK SEBELUMNYA !');
+        }
+
+       //  mengubah data 
+        $proses = $medicineBefore->update([
+            'type' => $request->type,
+            'name' => $request->name,
+            'price' => $request->price,
+            'stock' => $request->stock,
+        ]);
+        if ($proses) {
+            return redirect()->route('medicines')->with('success', 'Data Berhasil Diubah');
+        } else {
+            return redirect()->route('medicines.add')->with('failed', 'Data Gagal Diubah');
+        }
     }
 
     /**
@@ -109,7 +150,7 @@ class MedicineController extends Controller
     public function destroy(string $id)
     {
         //  menghapus data, mencari dengan where, lalu hapus dengan delete()
-        $proses = Medicine::where('id', $id)->delete();
+        $proses = Medicine::find( $id)->delete();
         if ($proses) {
             return redirect()->back()->with('success', 'Data Berhasil Dihapus');
         }   else {

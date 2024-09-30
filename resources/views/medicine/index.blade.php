@@ -32,7 +32,7 @@
                                 {{ $item->stock }}
                             </td>
                             <td class="d-flex justify-content-center py-3">
-                                <button class="btn btn-primary me-3">Edit</button>
+                                <a href="{{ route('medicines.edit', $item['id']) }}" class="btn btn-primary me-3">Edit</a>
                                 <button class="btn btn-danger"
                                     onclick="showModal('{{ $item->id }}', '{{ $item->name }}')">Delete</button>
                             </td>
@@ -80,11 +80,10 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
-
         //  fungsi untuk menampilkan
         function showModal(id, name) {
             //  isi untk action form
-            let action = '{{ route("medicines.delete", ":id") }}';
+            let action = '{{ route('medicines.delete', ':id') }}';
             action = action.replace(':id', id);
             //buat attribute action pada form
             $('#form-delete-obat').attr('action', action);

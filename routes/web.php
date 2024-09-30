@@ -39,3 +39,5 @@ Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medic
 //      (id) : path dinamis, nilainya akan berubah ubah (harus diisi ketika , mengakses route) -> ketika akses di blade maka aknan menjadi href="{{ route('nama_rout, $isipathdinamis') }}"
 //      fungsi path dinamis : spesifikasi data yang akan dproses
 Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.delete'); 
+Route::get('/medicines/edit/{id}', [MedicineController::class, 'edit'])->name('medicines.edit');
+Route::patch('/medicines/edit/{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');

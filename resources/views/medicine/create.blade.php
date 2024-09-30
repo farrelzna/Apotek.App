@@ -40,7 +40,7 @@
                 <label for="type" class="form-label">Tipe Obat</label>
                 <select name="type" id="type" class="form-control">
                     <option hidden selected disabled>Opsi</option>
-                    <option value="Tablet" {{ old('type') == 'Tablet' ? 'selected' : '' }}>Tablel</option>
+                    <option value="Tablet" {{ old('type') == 'Tablet' ? 'selected' : '' }}>Tablet</option>
                     <option value="Sirup" {{ old('type') == 'Sirup' ? 'selected' : '' }}>Sirup</option>
                     <option value="Kapsul" {{ old('type') == 'Kapsul' ? 'selected' : '' }}>Kapsul</option>
                 </select >
