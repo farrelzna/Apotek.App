@@ -28,13 +28,14 @@
                             <td>{{ $item['type'] }}</td>
                             <td>Rp.{{ number_format($item['price'], 0, ',', '.') }}</td>
                             {{-- ternary jika stock kurang dari tiga maka akan bewarna merah --}}
-                            <td class="{{ $item['stock'] <= 3 ? 'bg-danger text-white' : 'bg-white text-dark' }}">
+                            <td class="{{ $item['stock'] <= 3 ? 'bg-danger text-white' : 'bg-white text-dark' }}"
+                                onclick="editStock('{{ $item['id'] }}')">
                                 {{ $item->stock }}
                             </td>
                             <td class="d-flex justify-content-center py-3">
                                 <a href="{{ route('medicines.edit', $item['id']) }}" class="btn btn-primary me-3">Edit</a>
                                 <button class="btn btn-danger"
-                                    onclick="showModal('{{ $item->id }}', '{{ $item->name }}')">Delete</button>
+                                    onclick="showModal('{{ $item['id'] }}', '{{ $item['name'] }}')">Delete</button>
                             </td>
                         </tr>
                     @endforeach
@@ -49,7 +50,33 @@
             {{-- links() : menampilkan tombol navigasi, digunakan hanya ketika di controllernya pake pagiante() atau simplePaginate() --}}
             {{ $medicines->links() }}
         </div>
-        <!-- Modal -->
+        <!-- Modal Stock -->
+        <div class="modal fade" id="editStockModal" tabindex="-1" aria-labelledby="editStockLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form id="form-edit-stock" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editStockLabel">Edit Stok</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="id" id="medicine-id">
+                            <div class="form-group">
+                                <label for="stock" class="form-label">Stok</label>
+                                <input type="number" name="stock" id="stock" class="form-control" value={{ old('stock') }}> 
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- Modal Delete-->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <form action="" id="form-delete-obat" method="POST">
@@ -65,33 +92,63 @@
                             Apakah anda yakin ingin menghapus data obat "<span id="nama-obat"></span>" ini?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keluar</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
+
     </div>
 @endsection
 
 @push('script')
-    {{-- script --}}
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script>
-        //  fungsi untuk menampilkan
+        // fungsi untuk menampilkan modal
         function showModal(id, name) {
-            //  isi untk action form
+            // isi untuk action form
             let action = '{{ route('medicines.delete', ':id') }}';
             action = action.replace(':id', id);
-            //buat attribute action pada form
+            // buat atribut actionpada form
             $('#form-delete-obat').attr('action', action);
-            //  munculkan modal id nya exampleModal
-            //  id = id yang dikirimkan dari controller
+            // fungsi untuk menampilkan modal
+            // munculkan modal yang id nya exampleModal
             $('#exampleModal').modal('show');
-            //  set id
+            // innertext pada element html id nama-obat
             $('#nama-obat').text(name);
         }
+
+        function editStock(id, stock) {
+            $('#medicine-id').val(id);
+            $('#stock').val(stock);
+            $('#editStockModal').modal('show');
+        }
+
+        $('#form-edit-stock').on('submit', function(e) {
+            e.preventDefault();
+
+            let id = $('#medicine-id').val();
+            let stock = $('#stock').val();
+            let actionUrl = '{{ url('/medicines/update-stok') }}/' + id
+
+            $.ajax({
+                url: actionUrl,
+                type: 'PUT',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    stock: stock
+                },
+                success: function(response) {
+                    $('#editStockModal').modal('hide');
+                    location.reload();
+                },
+                error: function(xhr) {
+                    alert('ada masalah waktu update stok')
+                }
+            });
+        });
     </script>
 @endpush

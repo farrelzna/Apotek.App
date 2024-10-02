@@ -41,3 +41,5 @@ Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medic
 Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.delete'); 
 Route::get('/medicines/edit/{id}', [MedicineController::class, 'edit'])->name('medicines.edit');
 Route::patch('/medicines/edit/{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
+Route::put('/medicines/update-stok/{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
+Route::put('/medicines/update-stok/{id}', [MedicineController::class, 'stockEdit'])->name('medicines.stock.update');

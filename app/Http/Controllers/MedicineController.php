@@ -67,14 +67,14 @@ class MedicineController extends Controller
 
         //  menambah data
         //  nama_field_migration, -> $request->name_input_form
-        
+
         $proses = Medicine::create([
             'type' => $request->type,
             'name' => $request->name,
             'price' => $request->price,
             'stock' => $request->stock,
         ]);
-        
+
         if ($proses) {
             return redirect()->route('medicines')->with('success', 'Data Berhasil Ditambahkan');
         } else {
@@ -130,7 +130,7 @@ class MedicineController extends Controller
             return redirect()->back()->with('failed', 'STOCK TIDAK BOLEH KECIL DARI STOCK SEBELUMNYA !');
         }
 
-       //  mengubah data 
+        //  mengubah data 
         $proses = $medicineBefore->update([
             'type' => $request->type,
             'name' => $request->name,
@@ -150,11 +150,38 @@ class MedicineController extends Controller
     public function destroy(string $id)
     {
         //  menghapus data, mencari dengan where, lalu hapus dengan delete()
-        $proses = Medicine::find( $id)->delete();
+        $proses = Medicine::find($id)->delete();
         if ($proses) {
             return redirect()->back()->with('success', 'Data Berhasil Dihapus');
-        }   else {
+        } else {
             return redirect()->back()->with('failed', 'Data Gagal Dihapus');
+        }
+    }
+
+    public function stockEdit(Request $request, $id)
+    {
+        //  mencari data sesuai id
+        $medicine = Medicine::findOrFail($id);
+        $medicine->stock = $request->input('stock');
+        $medicine->save();
+
+        return response()->json(["success" => "STOCK BERHASIL DIUBAH !"], 200);
+    }
+
+    public function stockUpdate(Request $request, $id)
+    {
+        //  mengubah stock
+        $request->validate([
+            'stock' => 'required|numeric',
+        ]);
+
+        $medicine = Medicine::find($id);
+
+        if ($request->stock <= $medicine['stock']) {
+            return response()->json(["message" => "STOCK TIDAK BOLEH KECIL DARI STOCK SEBELUMNYA !"], 400);
+        } else {
+            $medicine->update(["stock" => $request->stock]);
+            return response()->json(["message" => "STOCK BERHASIL DIUBAH !"], 200);
         }
     }
 }
