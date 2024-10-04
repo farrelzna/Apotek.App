@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class LandingPageController extends Controller
+class HomeController extends Controller
 {
+
     //menampilknan banyak data lebih dari satu
     public function index()
     {
@@ -13,7 +14,7 @@ class LandingPageController extends Controller
         //  tanda . digunakan untuk sub-folder
         //  menggunakan kebac case
         
-        return view('landing-page');
+        return view('home');
     }
 
     public function create()

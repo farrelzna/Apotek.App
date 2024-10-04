@@ -1,10 +1,10 @@
 <?php
 
-//pemanggil controller
-use App\Models\Medicine;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\MedicineController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,32 +14,61 @@ use App\Http\Controllers\MedicineController;
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
-|
 */
 
-//  Route::httpmethod('/url',[namacontroller::namafunction])->nam('nama_route);
-//  httpmethod :
-//  get -> mengambil data 
-//  post -> menambah data 
-//  patch/put -> mengubah data 
-//  delete -> menghapus data 
-//  /url dan name() harus befa/unique
+//INI ADALAH HTTP METHOD//
+//Route::httpmethod('/url', [namaController::namaFunction])->name('nama_route);
+//get -> mengambil data
+//post -> menambah data
+//patch/put -> MENGUBAH DATA
+// delete -> menghapus data
+// /url ->
 
-Route::get('/home', function () {
-    return view('welcome');
-})->name('welcome');
+// Route::get('/', function(){
+// return view('welcome');
+// })->name('welcome');
 
-//      url : kebab case, name: snack case , controller function : camel case 
-Route::get('/landing-page', [LandingPageController::class, 'index'])->name('landing_page');
+Route::get('/home', [HomeController::class,'index'])->name('home');
 
-//      meneapilkan/mengelola data medicines
+
+//mengolola data medicines
+
 Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
 Route::get('/medicines/add', [MedicineController::class, 'create'])->name('medicines.add');
-Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medicines.store.add');
-//      (id) : path dinamis, nilainya akan berubah ubah (harus diisi ketika , mengakses route) -> ketika akses di blade maka aknan menjadi href="{{ route('nama_rout, $isipathdinamis') }}"
-//      fungsi path dinamis : spesifikasi data yang akan dproses
-Route::delete('/medicines/{id}', [MedicineController::class, 'destroy'])->name('medicines.delete'); 
-Route::get('/medicines/edit/{id}', [MedicineController::class, 'edit'])->name('medicines.edit');
-Route::patch('/medicines/edit/{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
-Route::put('/medicines/update-stok/{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
-Route::put('/medicines/update-stok/{id}', [MedicineController::class, 'stockEdit'])->name('medicines.stock.update');
+Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medicines.add.store');
+
+//path dinamis : nilainya akan berubah ubah (harus diissi ketika ingin mengakses route -> ketika akses di blade nya menjadi href="{{route('name_route,$isi path dinamis)}}")}} atau action="{{route('nama_route, $isiPathDinamis)}}"
+
+Route::delete('/medicines/delete{id}', [MedicineController::class,'destroy'])->name('medicines.delete');
+
+Route::get('/medicines/edit/{id}', [MedicineController::class,'edit'])->name('medicines.edit');
+
+Route::patch('/medicines/edit{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
+
+// Route::get('/stock/edit/{id}', [MedicineController::class],'stockEdit')->name('medicines.stock.edit');
+
+Route::put('/medicines/update-stock/{id}',[MedicineController::class, 'stockEdit'])->name('medicines.stock.edit');
+
+
+
+
+
+Route::get('/', [UsersController::class, 'showLogin'])->name('login');
+Route::get('/register', [UsersController::class, 'create'])->name('register.show');
+Route::post('/register', [UsersController::class, 'store'])->name('register.process');
+Route::post('/login', [UsersController::class, 'processLogin'])->name('login.process');
+Route::post('/logout', [UsersController::class, 'logout'])->name('logout');
+
+// Route yang dilindungi oleh middleware auth (hanya bisa diakses jika login)
+Route::middleware('auth')->group(function () {
+    Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
+});
+
+
+Route::get('/users', [UsersController::class, 'index'])->name('users');
+Route::get('/users/add', [UsersController::class, 'showCreateAccount'])->name('show.account.create');
+
+Route::post('/users/add', [UsersController::class, 'createAccount'])->name('create.account');
+Route::delete('/users/delete{id}', [UsersController::class,'destroy'])->name('users.delete');
+Route::get('/users/edit/{id}', [UsersController::class,'edit'])->name('users.edit');
+Route::patch('/users/edit{id}', [UsersController::class, 'update'])->name('users.edit.update');

@@ -1,4 +1,4 @@
-@extends('Templates.app', ['title' => 'Landing Page II Apotek'])
+@extends('Templates.app', ['title' => 'Home II Apotek'])
 
 {{--  
     extends = memanggil file bladenya
@@ -7,13 +7,15 @@
 --}}
 
 @section('content-dinamis')
+    <!-- Hero Section -->
 
-     <!-- Hero Section -->
-     <section class="hero">
+    <section class="hero">
         <div class="container">
             <h1>Aplikasi Apotek Modern</h1>
             <p class="lead">Kelola apotek Anda dengan mudah dan efisien, dari stok obat hingga transaksi harian.</p>
-            <a href="{{ route('medicines') }}" class="btn btn-primary btn-lg {{ Route::is('medicines') ? 'active' : '' }} ">Mulai Sekarang</a>
+            <a href="{{ route('medicines') }}"
+                class="btn btn-primary btn-lg {{ Route::is('medicines') ? 'active' : '' }} ">Mulai Sekarang</a>
+            <!-- Tombol Sign Up dan Sign In -->
         </div>
     </section>
 
@@ -27,8 +29,11 @@
                 </div>
                 <div class="col-md-6">
                     <h2 class="text-nowrap bg-body-secondary border" style="width: 4rem;">Tentang Kami</h2>
-                    <p>Kami adalah penyedia solusi manajemen apotek modern yang dirancang untuk meningkatkan efisiensi dan produktivitas operasional apotek Anda. Dengan pengalaman bertahun-tahun di industri, kami menyediakan platform yang aman, cepat, dan mudah digunakan.</p>
-                    <p>Visi kami adalah untuk mendigitalisasi layanan kesehatan melalui inovasi teknologi, memberikan aksesibilitas dan kenyamanan bagi para apoteker dan pasien mereka.</p>
+                    <p>Kami adalah penyedia solusi manajemen apotek modern yang dirancang untuk meningkatkan efisiensi dan
+                        produktivitas operasional apotek Anda. Dengan pengalaman bertahun-tahun di industri, kami
+                        menyediakan platform yang aman, cepat, dan mudah digunakan.</p>
+                    <p>Visi kami adalah untuk mendigitalisasi layanan kesehatan melalui inovasi teknologi, memberikan
+                        aksesibilitas dan kenyamanan bagi para apoteker dan pasien mereka.</p>
                 </div>
             </div>
         </div>
@@ -42,19 +47,22 @@
             <div class="row mt-5">
                 <div class="col-md-4 p-3 mb-2">
                     <blockquote class="blockquote">
-                        <p>"ApotekApp telah sangat membantu kami dalam mengelola stok dan pelanggan. Sangat user-friendly dan cepat!"</p>
+                        <p>"ApotekApp telah sangat membantu kami dalam mengelola stok dan pelanggan. Sangat user-friendly
+                            dan cepat!"</p>
                         <footer class="blockquote-footer mt-2">Andi, Apotek Sejahtera</footer>
                     </blockquote>
                 </div>
                 <div class="col-md-4 p-3 mb-2">
                     <blockquote class="blockquote">
-                        <p>"Dengan ApotekApp, pengelolaan transaksi menjadi jauh lebih cepat, efisien, dan aman. Sangat direkomendasikan!"</p>
+                        <p>"Dengan ApotekApp, pengelolaan transaksi menjadi jauh lebih cepat, efisien, dan aman. Sangat
+                            direkomendasikan!"</p>
                         <footer class="blockquote-footer mt-3">Rina, Apotek Keluarga</footer>
                     </blockquote>
                 </div>
                 <div class="col-md-4 p-3 mb-2">
                     <blockquote class="blockquote">
-                        <p>"Aplikasi ApotekApp ini sangat membantu bisnis kami menjadi lebih efisien dan terorganisir. Kami sangat senang!"</p>
+                        <p>"Aplikasi ApotekApp ini sangat membantu bisnis kami menjadi lebih efisien dan terorganisir. Kami
+                            sangat senang!"</p>
                         <footer class="blockquote-footer mt-3">Budi, Apotek Maju</footer>
                     </blockquote>
                 </div>
@@ -70,37 +78,46 @@
             <div class="accordion mt-4" id="faqAccordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             Bagaimana cara mendaftar di ApotekApp?
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                        data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Anda dapat mendaftar dengan mengklik tombol "Mulai Sekarang" di halaman ini dan mengisi informasi yang dibutuhkan.
+                            Anda dapat mendaftar dengan mengklik tombol "Mulai Sekarang" di halaman ini dan mengisi
+                            informasi yang dibutuhkan.
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                             Apakah data saya aman?
                         </button>
                     </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                        data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Ya, kami menggunakan enkripsi tingkat tinggi untuk memastikan keamanan data apotek dan pelanggan Anda.
+                            Ya, kami menggunakan enkripsi tingkat tinggi untuk memastikan keamanan data apotek dan pelanggan
+                            Anda.
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                             Bagaimana cara menghubungi layanan pelanggan?
                         </button>
                     </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                        data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            Anda bisa menghubungi kami melalui formulir kontak di bawah ini atau langsung melalui email kami.
+                            Anda bisa menghubungi kami melalui formulir kontak di bawah ini atau langsung melalui email
+                            kami.
                         </div>
                     </div>
                 </div>
@@ -138,8 +155,8 @@
     <footer>
         <div class="container">
             <p>&copy; 2024 ApotekApp. All rights reserved.</p>
-            <a href="#" class="text-decoration-none">Kebijakan Privasi</a> | <a href="#" class="text-decoration-none">Syarat dan Ketentuan</a>
+            <a href="#" class="text-decoration-none">Kebijakan Privasi</a> | <a href="#"
+                class="text-decoration-none">Syarat dan Ketentuan</a>
         </div>
     </footer>
-    
 @endsection

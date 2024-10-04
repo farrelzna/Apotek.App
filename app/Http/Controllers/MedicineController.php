@@ -22,7 +22,7 @@ class MedicineController extends Controller
         //  compact : mengirim data ke blade : compact('namavariable')
         //  $medicines = Medicine::all()->simplePaginate(5);
         //  where('nama_field_migration, 'operator', 'value') : mencari
-        //  operator ->=, <, >, <-, <=, >=, !=, like 
+        //  operator ->=, <, >, <-, <=, >=, !=, like
         //  '%' depan = mencari kata belakang
         //  '%' belakanag = mencari kata depan
         //  orderby : mengurutkan berdasarkan field migration terntentu
@@ -130,7 +130,7 @@ class MedicineController extends Controller
             return redirect()->back()->with('failed', 'STOCK TIDAK BOLEH KECIL DARI STOCK SEBELUMNYA !');
         }
 
-        //  mengubah data 
+        //  mengubah data
         $proses = $medicineBefore->update([
             'type' => $request->type,
             'name' => $request->name,
@@ -168,20 +168,23 @@ class MedicineController extends Controller
         return response()->json(["success" => "STOCK BERHASIL DIUBAH !"], 200);
     }
 
-    public function stockUpdate(Request $request, $id)
+    public function updateStock(Request $request, $id)
     {
-        //  mengubah stock
+        // Validasi input
         $request->validate([
-            'stock' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
         ]);
 
+        // Temukan obat berdasarkan ID
         $medicine = Medicine::find($id);
-
-        if ($request->stock <= $medicine['stock']) {
-            return response()->json(["message" => "STOCK TIDAK BOLEH KECIL DARI STOCK SEBELUMNYA !"], 400);
-        } else {
-            $medicine->update(["stock" => $request->stock]);
-            return response()->json(["message" => "STOCK BERHASIL DIUBAH !"], 200);
+        if (!$medicine) {
+            return response()->json(['error' => 'Obat tidak ditemukan'], 404);
         }
+
+        // Update stok obat
+        $medicine->stock = $request->stock;
+        $medicine->save();
+
+        return response()->json(['success' => true, 'message' => 'Stok berhasil diupdate!']);
     }
 }

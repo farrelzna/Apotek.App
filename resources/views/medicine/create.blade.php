@@ -3,7 +3,7 @@
 @section('content-dinamis')
 
     <div class="mt-5 m-auto my-6 w-auto p-4" style="width: 65%;">
-        <form action="{{ route('medicines.store.add') }}" method="POST" class="p-4 mt-2"
+        <form action="{{ route('medicines.add.store') }}" method="POST" class="p-4 mt-2"
             style="border-radius: 10px; box-shadow:-20px -20px 60px #bebebe;">
             @if (Session::get('failed'))
                 <div class="alert alert-danger">{{ Session::get('failed') }}</div>

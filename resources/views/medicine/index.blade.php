@@ -65,7 +65,7 @@
                             <input type="hidden" name="id" id="medicine-id">
                             <div class="form-group">
                                 <label for="stock" class="form-label">Stok</label>
-                                <input type="number" name="stock" id="stock" class="form-control" value={{ old('stock') }}> 
+                                <input type="number" name="stock" id="stock" class="form-control"> 
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -104,51 +104,60 @@
 @endsection
 
 @push('script')
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script>
-        // fungsi untuk menampilkan modal
-        function showModal(id, name) {
-            // isi untuk action form
-            let action = '{{ route('medicines.delete', ':id') }}';
-            action = action.replace(':id', id);
-            // buat atribut actionpada form
-            $('#form-delete-obat').attr('action', action);
-            // fungsi untuk menampilkan modal
-            // munculkan modal yang id nya exampleModal
-            $('#exampleModal').modal('show');
-            // innertext pada element html id nama-obat
-            $('#nama-obat').text(name);
-        }
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script>
+    //fungsi untuk menampilkan modal
+    //isi untuk action form
+    function showModal(id, name) {
+        let action = '{{route("medicines.delete", ":id") }}';
+        action = action.replace (':id', id);
 
-        function editStock(id, stock) {
-            $('#medicine-id').val(id);
-            $('#stock').val(stock);
-            $('#editStockModal').modal('show');
-        }
+        $('#form-delete-obat').attr('action', action);
+        //munculkan modal yang id nya exampleModal
+        $('#exampleModal').modal('show');
+        //innerText pada element html id nama-obat
+        console.log(name);
+        $('#nama-obat').text(name);
+    }
 
-        $('#form-edit-stock').on('submit', function(e) {
-            e.preventDefault();
+    //fungsi untuk menampilkan modal edit stok sama masukin nilai stok yang mau di edit
+    function editStock(id, stock) {
+        $('#editStockModal').modal('show');
+        $('#medicine-id').val(id);
+        $('#stock').val(stock);
+    }
 
-            let id = $('#medicine-id').val();
-            let stock = $('#stock').val();
-            let actionUrl = '{{ url('/medicines/update-stok') }}/' + id
+    //event listener buat handle submit form secara AJAX
+    $('#form-edit-stock').on('submit', function(e){
+        // biar form gak ke submit dengan cara biasa (refresh halaman)
+        e.preventDefault();
 
-            $.ajax({
-                url: actionUrl,
-                type: 'PUT',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    stock: stock
-                },
-                success: function(response) {
-                    $('#editStockModal').modal('hide');
-                    location.reload();
-                },
-                error: function(xhr) {
-                    alert('ada masalah waktu update stok')
-                }
-            });
-        });
-    </script>
+        //ambil id obat dari input hidden
+        let id = $('#medicine-id').val();
+        //ambil stok baru yang diinput user
+        let stock = $('#stock').val();
+        // bikin URL buat update stok dengan metode PUT
+        let actionUrl = "{{ url('/medicines/update-stock')}}/" + id;
+
+        //kirim request AJAX buat update stok
+        $.ajax({
+            url: actionUrl, //URL tujuan buat update stok
+            type: 'PUT', //guankan metode PUT buat update date
+            data: {
+                _token: '{{ csrf_token() }}', //Token CSRF biar aman
+                stock: stock //data stok baru yang mau di kirim ke server database
+            },
+            success: function(response) {
+                //tutup modal kelas update berhasil
+                $('#editStockModal').modal('hide');
+                //refresh halaman biar perubahan stok kelihatan
+                location.reload();
+            },
+            error: function(xhr) {
+                //kasih alert kalau ada error pas update stok
+                alert('Error updating stock');
+                console.log(xhr);
+            }
+    })})
+</script>
 @endpush

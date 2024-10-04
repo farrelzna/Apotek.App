@@ -10,70 +10,81 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="icon" type="image/x-icon" href="{{ asset('asset/img/1.webp') }}">
     <link rel="stylesheet" href="asset/css/style.css">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 @stack('style')
 
 <body>
 
-    {{-- navbar --}}
-
-    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow sticky-top" data-bs-theme="dark">
+    {{-- Navbar --}}
+    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow sticky-top p-3" data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand fs-3" href="#">Apotek</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('welcome') ? 'active' : '' }}" aria-current="page"
-                            href="home">Home</a>
+                        <a class="nav-link {{ Route::is('home') ? 'active' : '' }}" aria-current="page"
+                            href="{{ route('home') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('landing_page') ? 'active' : '' }}"
-                            href="{{ route('landing_page') }}">LandingPage</a>
+                        <a class="nav-link {{ Route::is('medicines') ? 'active' : '' }}"
+                            href="{{ route('medicines') }}">Medicine Data</a>
+                    </li>
+                    <li class="nav-item {{ Route::is('medicines') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('medicines') }}">Order</a>
                     </li>
                 </ul>
-                <form class="d-flex position-absolute top-50 start-50 translate-middle" role="search"
-                    action="{{ route('medicines') }}" method="GET">
-                    {{-- mengaftikan search 
-                        1. pastikan <form> ada action dan @method
-                            -Get = data di tampilkan di url, ketika form berfunsi sebagai pencarian
-                            -post = kebalikanya, ketika form berfungsi sebagai menambah/mengubah/menghapus
-                            -action = diisi dari 
-                        2. pastikan ada button dngn type submit
-                        3. pastikan ada name 
-                    --}}
+
+                {{-- Search Bar --}}
+                <form class="d-flex me-auto" role="search" action="{{ route('medicines') }}" method="GET">
                     <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search"
                         name="search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
-            </div>
-            <div class="collapse navbar-collapse position-absolute top-50 end-0 translate-middle-y"
-                id="navbarNavDropdown">
-                <ul class="navbar-nav">
+
+                {{-- Akun dan Autentikasi --}}
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link {{ Route::is('medicines') ? 'active' : '' }}"
-                            href="{{ route('medicines') }}">Data Obat</a>
+                        <a class="nav-link {{ Route::is('users') ? 'active' : '' }}" href="{{ route('users') }}">Kelola Akun</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::is('medicines') ? 'active' : '' }}"
-                            href="{{ route('medicines') }}">Pembelian</a>
-                    </li>
+
+                    @guest
+                        <li class="nav-item" >
+                            <a  class="nav-link {{ Route::is('login') ? 'active' : '' }}"
+                                href="{{ route('login') }}">Masuk Akun</a>
+                        </li>
+                        <li class="nav-item">
+                            <a style="cursor: pointer;" class="nav-link {{ Route::is('register.show') ? 'active' : '' }}"
+                                href="{{ route('register.show') }}">Daftar Akun</a>
+                        </li>
+                    @endguest
+
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Logout
+                            </a>
+                            <form id="logout-form" method="POST" action="{{route('logout')}}" style="display: none;">
+                                @csrf  
+                            </form>
+                        </li>
+                    @endauth
                 </ul>
             </div>
         </div>
     </nav>
 
-    {{-- wadah untuk menampung seluruh view --}}
-
+    {{-- Wadah untuk konten dinamis --}}
     @yield('content-dinamis')
 
     {{-- Bootstrap JS --}}
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
@@ -83,6 +94,5 @@
 
     @stack('script')
 </body>
-
 
 </html>
