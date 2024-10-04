@@ -34,6 +34,18 @@
                         </div>
 
                         <div class="mb-3">
+                            <label for="name" class="form-label">Role</label>
+                            <select name="role" id="role" class="form-select">
+                                <option hidden selected disabled>Pilih</option>
+                                <option value="Apoteker" >Apoteker</option>
+                                <option value="Users">Pengguna</option>
+                            </select>
+                            @if ($errors->has('role'))
+                                <div class="text-danger mt-1">{{ $errros->first('email') }}</div>
+                            @endif
+                        </div>
+
+                        <div class="mb-3">
                             <label for="password" class="form-label">Password</label>
                             <input type="password" name="password" id="password" required class="form-control"
                                 placeholder="Enter Your password">
@@ -55,7 +67,8 @@
                     </form>
 
                     <div class="text-center mt-3">
-                        <a href="{{ route('login') }}" class="link-opacity-75-hover no-underline">Already have an account? Login here</a>
+                        <a href="{{ route('login') }}" class="link-opacity-75-hover no-underline">Already have an account?
+                            Login here</a>
                     </div>
                 </div>
             </div>

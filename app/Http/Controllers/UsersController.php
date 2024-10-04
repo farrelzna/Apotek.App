@@ -10,14 +10,19 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+    public function index()
+    {
+        $users = User::all();
+        return view('account.index', compact('users'));
+    }
 
     public function login(Request $request)
     {
         $request->validate([
-            'name'=>'required | min:5',
+            'name' => 'required | min:5',
             'email' => 'required |unique:users',
             'password' => 'required |min:5',
-        ],[
+        ], [
             'name.required' => 'NAMA HARUS DI ISI !',
             'name.min' => 'NAMA TERLALU PENDEK!',
             'password.min' => 'NAMA TERLALU PENDEK!',
@@ -26,100 +31,123 @@ class UsersController extends Controller
             'password.required' => 'PASSWORD HARUS DI ISI!',
         ]);
 
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::User();
 
-            if($user-> role === 'admin') {
+            if ($user->role === 'Admin') {
                 return redirect()->route('admin.dashboard')->with('success', 'Login Successfully');
-            } elseif($user->role === 'kasir') {
+            } elseif ($user->role === 'Apoteker') {
+                return redirect()->route('apoteker.dashboard')->with('success', 'Login Successfully');
+            } elseif ($user->role === 'Users') {
                 return redirect()->route('users.dashboard')->with('success', 'Login Successfully');
-        }
-    }
+            }
+        };
         return back()->withErrors([
-            'email'=> 'email or password incorrect',
+            'email' => 'email or password incorrect',
         ])->withInput($request->only('email'));
 
-
         // return redirect()->route('login')->with('error', 'Invalid email or password');
-
     }
 
+    // Menampilkan form login
+    public function showLogin()
+    {
+        return view('auth.login'); // Pastikan view 'page-login' sesuai
+    }
 
+    // Proses login
+    public function processLogin(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-     // Menampilkan form login
-     public function showLogin()
-     {
-         return view('auth.login'); // Pastikan view 'page-login' sesuai
-     }
+        // Cek apakah user ada dan password sesuai
+        if (Auth::attempt($request->only('email', 'password'))) {
+            // Login berhasil, redirect ke halaman apotek (medicines)
+            return redirect()->route('home');
+        }
 
-     // Proses login
-     public function processLogin(Request $request)
-     {
-         // Validasi input
-         $request->validate([
-             'email' => 'required|email',
-             'password' => 'required',
-         ]);
+        // Jika gagal login
+        return redirect()->back()->with('error', 'Akun Belum Terdaftar');
+    }
 
-         // Cek apakah user ada dan password sesuai
-         if (Auth::attempt($request->only('email', 'password'))) {
-             // Login berhasil, redirect ke halaman apotek (medicines)
-             return redirect()->route('medicines');
-         }
+    // Menampilkan form register
+    public function create()
+    {
+        return view('auth.register'); // Pastikan view 'page-register' sesuai
+    }
 
-         // Jika gagal login
-         return redirect()->back()->with('error', 'Akun Belum Terdaftar');
-     }
-
-     // Menampilkan form register
-     public function create()
-     {
-         return view('auth.register'); // Pastikan view 'page-register' sesuai
-     }
-
-     // Proses registrasi
     // Proses registrasi
-public function store(Request $request)
-{
-    // Validasi input
-    $request->validate([
-        'name' => 'required|string|max:255', // Menambahkan validasi untuk nama
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|confirmed',
-    ]);
+    // Proses registrasi
+    public function store(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255', // Menambahkan validasi untuk nama
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed',
+            'role' => 'required',
+        ]);
 
-    // Membuat user baru
-    $user = User::create([
-        'name' => $request->name,  // Menambahkan name
-        'email' => $request->email,
-        'password' => bcrypt($request->password),
-        'role' => 'kasir',
-    ]);
+        // Membuat user baru
+        $user = User::create([
+            'name' => $request->name,  // Menambahkan name
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+        ]);
 
-    // Login otomatis setelah register
-    Auth::login($user);
+        // Login otomatis setelah register
+        Auth::login($user);
 
-    // Redirect ke halaman apotek (medicines)
-    return redirect()->route('medicines')->with('success', 'Registrasi berhasil, Anda sudah login.');
-}
+        // Redirect ke halaman apotek (medicines)
+        return redirect()->route('login')->with('success', 'Registrasi berhasil, Anda sudah login.');
+    }
 
+    public function createAccount(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255', // Validasi untuk nama
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed|min:5', // Validasi untuk password dengan konfirmasi
+            'role' => 'required',
+        ], [
+            'name.required' => 'NAMA HARUS DIISI!',
+            'email.required' => 'EMAIL HARUS DIISI!',
+            'email.unique' => 'EMAIL SUDAH TERDAFTAR!',
+            'password.required' => 'PASSWORD HARUS DIISI!',
+            'password.confirmed' => 'PASSWORD DAN KONFIRMASI PASSWORD TIDAK SESUAI!',
+            'password.min' => 'PASSWORD HARUS MINIMAL 6 KARAKTER!',
+        ]);
 
-     // Proses logout
-     public function logout()
-     {
-         Auth::logout();  // Logout menggunakan facade Auth
-         return redirect()->route('login')->with('success', 'Logged out successfully.');
-     }
+        $user = User::create([
 
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'role' => $request->role,
+        ]);
 
+        Auth::login($user);
 
+        return redirect()->route('users')->with('success', 'Account created successfully');
+    }
+    
+    public function showCreateAccount()
+    {
+        return view('account.create');
+    }
 
+    // Proses logout
+    public function logout()
+    {
+        Auth::logout();  // Logout menggunakan facade Auth
+        return redirect()->route('login')->with('success', 'Logged out successfully.');
+    }
 
-     public function index()
-     {
-         $users = User::all();
-         return view ('account.index', compact('users'));
-     }
 
 
     /**
@@ -148,11 +176,11 @@ public function store(Request $request)
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'=>'required | min:5',
+            'name' => 'required | min:5',
             'email' => 'required |min:5',
             'password' => 'required |min:5',
-            'role'=>'required',
-        ],[
+            'role' => 'required',
+        ], [
             'name.required' => 'NAMA HARUS DI ISI !',
             'name.min' => 'NAMA TERLALU PENDEK!',
             'password.min' => 'NAMA TERLALU PENDEK!',
@@ -161,65 +189,33 @@ public function store(Request $request)
             'password.required' => 'PASSWORD HARUS DI ISI!',
         ]);
 
-         //  mengubah data
-         $userBefore = User::where('id', $id)->first();
-         $proses = $userBefore->update([
-             'name' => $request->name,
-             'email' => $request->email,
-             'role' => $request->role,
-         ]);
-         if ($proses) {
-             return redirect()->route('users')->with('success', 'Data Berhasil Diubah');
-         } else {
-             return redirect()->route('users.add')->with('failed', 'Data Gagal Diubah');
-         }
+        //  mengubah data
+        $userBefore = User::where('id', $id)->first();
+        $proses = $userBefore->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'password' => bcrypt($request->password),
+        ]);
+        if ($proses) {
+            return redirect()->route('users')->with('success', 'Data Berhasil Diubah');
+        } else {
+            return redirect()->route('users.add')->with('failed', 'Data Gagal Diubah');
         }
+    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
-         //  menghapus data, mencari dengan where, lalu hapus dengan delete()
-         $proses = User::find($id)->delete();
-         if ($proses) {
-             return redirect()->back()->with('success', 'Data Berhasil Dihapus');
-         } else {
-             return redirect()->back()->with('failed', 'Data Gagal Dihapus');
-  }
-  }
-
-  public function createAccount(Request $request){
-    $request->validate([
-        'name' => 'required|string|max:255', // Validasi untuk nama
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|confirmed|min:6', // Validasi untuk password dengan konfirmasi
-    ],[
-        'name.required' => 'NAMA HARUS DIISI!',
-        'email.required' => 'EMAIL HARUS DIISI!',
-        'email.unique' => 'EMAIL SUDAH TERDAFTAR!',
-        'password.required' => 'PASSWORD HARUS DIISI!',
-        'password.confirmed' => 'PASSWORD DAN KONFIRMASI PASSWORD TIDAK SESUAI!',
-        'password.min' => 'PASSWORD HARUS MINIMAL 6 KARAKTER!',
-    ]);
-
-    $user = User::create([
-
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => $request->password,
-        'role' => 'kasir',
-    ]);
-
-    Auth::login($user);
-
-    return redirect()->route('users')->with('success', 'Account created successfully');
-}
-public function showCreateAccount()
-{
-    return view('account.create');
-
-}
-
+        //  menghapus data, mencari dengan where, lalu hapus dengan delete()
+        $proses = User::find($id)->delete();
+        if ($proses) {
+            return redirect()->back()->with('success', 'Data Berhasil Dihapus');
+        } else {
+            return redirect()->back()->with('failed', 'Data Gagal Dihapus');
+        }
+    }
 
 }

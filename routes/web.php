@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\UsersController;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,19 +54,21 @@ Route::put('/medicines/update-stock/{id}',[MedicineController::class, 'stockEdit
 
 
 
-
+//  mengolola data users
 Route::get('/', [UsersController::class, 'showLogin'])->name('login');
 Route::get('/register', [UsersController::class, 'create'])->name('register.show');
 Route::post('/register', [UsersController::class, 'store'])->name('register.process');
 Route::post('/login', [UsersController::class, 'processLogin'])->name('login.process');
 Route::post('/logout', [UsersController::class, 'logout'])->name('logout');
 
-// Route yang dilindungi oleh middleware auth (hanya bisa diakses jika login)
+//  Route yang dilindungi oleh middleware auth (hanya bisa diakses jika login)
 Route::middleware('auth')->group(function () {
     Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
+    Route::get('/users', [UsersController::class, 'index'])->name('users');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 });
 
-
+//  mengolola data users 
 Route::get('/users', [UsersController::class, 'index'])->name('users');
 Route::get('/users/add', [UsersController::class, 'showCreateAccount'])->name('show.account.create');
 
@@ -72,3 +76,5 @@ Route::post('/users/add', [UsersController::class, 'createAccount'])->name('crea
 Route::delete('/users/delete{id}', [UsersController::class,'destroy'])->name('users.delete');
 Route::get('/users/edit/{id}', [UsersController::class,'edit'])->name('users.edit');
 Route::patch('/users/edit{id}', [UsersController::class, 'update'])->name('users.edit.update');
+//  menampilkan profile users
+Route::get('/profile', [ProfileController::class, 'index'])->name('profile');

@@ -165,6 +165,16 @@ class MedicineController extends Controller
         $medicine->stock = $request->input('stock');
         $medicine->save();
 
+        if (isset($request->stock)) {
+            return response()->json(["failed" => "STOCK TIDAK KOSONG !"], 200);
+        }
+
+        $medicine = Medicine::findOrFail($id);
+
+        if ($request->stock < $medicine['stock']) {
+            return response()->json(["failed" => "STOCK TIDAK BOLEH KECIL DARI STOCK SEBELUMNYA !"], 200);
+        }
+
         return response()->json(["success" => "STOCK BERHASIL DIUBAH !"], 200);
     }
 

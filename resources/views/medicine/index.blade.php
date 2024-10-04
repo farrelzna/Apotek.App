@@ -2,17 +2,22 @@
 
 @section('content-dinamis')
     <div class="d-block mxauto my-6 w-auto p-4">
-        <a href="{{ route('medicines.add') }}" class="btn btn-success mb-3">+ Tambah</a>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>List Medicine</h2>
+            <a href="{{ route('medicines.add') }}" class="btn btn-success mb-3">+ Tambah</a>
+        </div>
+
         @if (Session::get('success'))
             <div class="alert alert-success">{{ Session::get('success') }}</div>
         @endif
+
         <table class="table table-bordered table-striped text-center align-middle">
             <thead>
                 <tr class="table-secondary">
                     <th>#</th>
-                    <th>Nama Obat</th>
-                    <th>Tipe</th>
-                    <th>Harga</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Price</th>
                     <th>Stock</th>
                     <th>Action</th>
                 </tr>
@@ -28,9 +33,10 @@
                             <td>{{ $item['type'] }}</td>
                             <td>Rp.{{ number_format($item['price'], 0, ',', '.') }}</td>
                             {{-- ternary jika stock kurang dari tiga maka akan bewarna merah --}}
-                            <td class="{{ $item['stock'] <= 3 ? 'bg-danger text-white' : 'bg-white text-dark' }}"
-                                onclick="editStock('{{ $item['id'] }}')">
-                                {{ $item->stock }}
+                            <td class="{{ $item['stock'] <= 3 ? 'bg-danger text-white' : 'bg-white text-dark' }}"                        
+                                onclick="editStock('{{ $item['id'] }}')"
+                                style="cursor: pointer;">
+                                <span style="cursor: pointer; text-decoration: underline;">{{ $item->stock }}</span>
                             </td>
                             <td class="d-flex justify-content-center py-3">
                                 <a href="{{ route('medicines.edit', $item['id']) }}" class="btn btn-primary me-3">Edit</a>
@@ -41,7 +47,7 @@
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="6" class='text-center text-bold'>Data Kosong</td>
+                        <td colspan="6" class='text-center text-bold'>Empty Data</td>
                     </tr>
                 @endif
             </tbody>
@@ -58,19 +64,19 @@
                     @method('PUT')
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="editStockLabel">Edit Stok</h5>
+                            <h5 class="modal-title" id="editStockLabel">Edit Stock</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <input type="hidden" name="id" id="medicine-id">
                             <div class="form-group">
-                                <label for="stock" class="form-label">Stok</label>
+                                <label for="stock" class="form-label">Stock</label>
                                 <input type="number" name="stock" id="stock" class="form-control"> 
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
                     </div>
                 </form>
@@ -85,15 +91,15 @@
                     @method('DELETE')
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Hapus Data Obat</h1>
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Medicine Data</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            Apakah anda yakin ingin menghapus data obat "<span id="nama-obat"></span>" ini?
+                            Are you sure you want to delete medicine data "<span id="nama-obat"></span>" ini?
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Keluar</button>
-                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Delete</button>
                         </div>
                     </div>
                 </form>
@@ -151,12 +157,13 @@
                 //tutup modal kelas update berhasil
                 $('#editStockModal').modal('hide');
                 //refresh halaman biar perubahan stok kelihatan
+                alert('Stock Update Successful')
                 location.reload();
             },
             error: function(xhr) {
                 //kasih alert kalau ada error pas update stok
-                alert('Error updating stock');
-                console.log(xhr);
+                alert(err.responseJSON.message);
+                // console.log(xhr);
             }
     })})
 </script>

@@ -32,8 +32,9 @@
             <div class="form-group ">
                 <label for="role" class="form-label">Role</label>
                 <select name="role" id="role" class="form-select">
-                    <option value="admin" {{ $users['role'] == 'admin' ? 'selected' : '' }}>Admin</option>
-                    <option value="kasir" {{ $users['role'] == 'kasir' ? 'selected' : '' }}>Kasir</option>
+                    <option value="Admin" {{ $users['role'] == 'Admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="Apoteker" {{ $users['role'] == 'Apoteker' ? 'selected' : '' }}>Apoteker</option>
+                    <option value="Users" {{ $users['role'] == 'Users' ? 'selected' : '' }}>Pengguna</option>
                 </select>
             </div>
 

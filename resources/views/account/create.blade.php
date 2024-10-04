@@ -43,12 +43,17 @@
                     <label for="password" class="form-label">Password</label>
                     <input type="password" name="password" id="password" class="form-control">
                 </div>
+                <div class="form-group">
+                    <label for="password-confirmation" class="form-label">Password Confirmation</label>
+                    <input type="password" name="password-confirmation" id="password-confirmation" class="form-control">
+                </div>
 
                 <label for="name" class="form-label">Role</label>
                 <select name="role" id="role" class="form-select">
                     <option hidden selected disabled>Pilih</option>
-                    <option>Kasir</option>
                     <option>Admin</option>
+                    <option>Kasir</option>
+                    <option>Pengguna</option>
                 </select>
             </div>
             <button type="submit" class="btn btn-success mt-3">Kirim Data</button>
