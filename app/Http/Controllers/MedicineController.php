@@ -8,9 +8,56 @@ use App\Models\Medicine;
 
 class MedicineController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function stockEdit(Request $request, $id)
+    {
+        //  mencari data sesuai id
+        $medicine = Medicine::findOrFail($id);
+        $medicine->stock = $request->input('stock');
+        $medicine->save();
+
+        if (isset($request->stock)) {
+            return response()->json(["failed" => "STOCK TIDAK KOSONG !"], 200);
+        }
+
+        $medicine = Medicine::findOrFail($id);
+
+        if ($request->stock < $medicine['stock']) {
+            return response()->json(["failed" => "STOCK TIDAK BOLEH KECIL DARI STOCK SEBELUMNYA !"], 200);
+        }
+
+        return response()->json(["success" => "STOCK BERHASIL DIUBAH !"], 200);
+    }
+
+    public function updateStock(Request $request, $id)
+    {
+        // Validasi input
+        $request->validate([
+            'stock' => 'required|integer|min:0',
+        ]);
+
+        // Temukan obat berdasarkan ID
+        $medicine = Medicine::find($id);
+        if (!$medicine) {
+            return response()->json(['error' => 'Obat tidak ditemukan'], 404);
+        }
+
+        // Update stok obat
+        $medicine->stock = $request->stock;
+        $medicine->save();
+
+        return response()->json(['success' => true, 'message' => 'Stok berhasil diupdate!']);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function indexOrders(Request $request)
+    {
+        $medicine = Medicine::all(); // Mengambil semua data dari tabel obats
+
+        return view('medicine.order', compact('medicine'));
+    }
+
+   ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     //  Request $request = mengambil semua data dari form yang dikirim ke action yg terhubung dengan func ini
     public function index(Request $request)
@@ -51,28 +98,33 @@ class MedicineController extends Controller
         //  required : wajib diisi
 
         $request->validate([
-            'type' => 'required',
             'name' => 'required|min:5|max:20',
-            'price' => 'required|numeric',
+            'description' => 'required|min:5|max:100',
+            'type' => 'required',
             'stock' => 'required',
+            'price' => 'required|numeric',
         ], [
-            'type.required' => 'TIPE HARUS DI ISI !',
             'name.required' => 'NAMA HARUS DI ISI !',
             'name.min' => 'NAMA TERLALU PENDEK !',
             'name.max' => 'NAMA TERLALU PANJANG !',
+            'description.required' => 'DESKRIPSI HARUS DI ISI !',
+            'description.min' => 'DESKRIPSI TERLALU PENDEK !',
+            'description.max' => 'DESKRIPSI TERLALU PANJANG !',
+            'type.required' => 'TIPE HARUS DI ISI !',
+            'stock.required' => 'STOCK HARUS DI ISI !',
             'price.numeric' => 'HARGA HARUS ANGKA !',
             'price.required' => 'HARGA HARUS DI ISI !',
-            'stock.required' => 'STOCK HARUS DI ISI !',
         ]);
 
         //  menambah data
         //  nama_field_migration, -> $request->name_input_form
 
         $proses = Medicine::create([
-            'type' => $request->type,
             'name' => $request->name,
-            'price' => $request->price,
+            'type' => $request->type,
+            'description' => $request->description,
             'stock' => $request->stock,
+            'price' => $request->price,
         ]);
 
         if ($proses) {
@@ -110,18 +162,20 @@ class MedicineController extends Controller
     {
         //
         $request->validate([
-            'type' => 'required',
             'name' => 'required|min:5|max:20',
-            'price' => 'required|numeric',
+            'type' => 'required',
+            'description' => 'required|min:5|max:`100',
             'stock' => 'required',
+            'price' => 'required|numeric',
         ], [
-            'type.required' => 'TIPE HARUS DI ISI !',
             'name.required' => 'NAMA HARUS DI ISI !',
             'name.min' => 'NAMA TERLALU PENDEK !',
             'name.max' => 'NAMA TERLALU PANJANG !',
+            'description.required' => 'DESKRIPSI HARUS DI ISI !',
+            'type.required' => 'TIPE HARUS DI ISI !',
+            'stock.required' => 'STOCK HARUS DI ISI !',
             'price.numeric' => 'HARGA HARUS ANGKA !',
             'price.required' => 'HARGA HARUS DI ISI !',
-            'stock.required' => 'STOCK HARUS DI ISI !',
         ]);
 
         //ambli data sebelumnya, cek isi input stock jangan lebi kecil dari stock sebelumnya
@@ -132,10 +186,11 @@ class MedicineController extends Controller
 
         //  mengubah data
         $proses = $medicineBefore->update([
-            'type' => $request->type,
             'name' => $request->name,
-            'price' => $request->price,
+            'type' => $request->type,
+            'description' => $request->description,
             'stock' => $request->stock,
+            'price' => $request->price,
         ]);
         if ($proses) {
             return redirect()->route('medicines')->with('success', 'Data Berhasil Diubah');
@@ -156,45 +211,5 @@ class MedicineController extends Controller
         } else {
             return redirect()->back()->with('failed', 'Data Gagal Dihapus');
         }
-    }
-
-    public function stockEdit(Request $request, $id)
-    {
-        //  mencari data sesuai id
-        $medicine = Medicine::findOrFail($id);
-        $medicine->stock = $request->input('stock');
-        $medicine->save();
-
-        if (isset($request->stock)) {
-            return response()->json(["failed" => "STOCK TIDAK KOSONG !"], 200);
-        }
-
-        $medicine = Medicine::findOrFail($id);
-
-        if ($request->stock < $medicine['stock']) {
-            return response()->json(["failed" => "STOCK TIDAK BOLEH KECIL DARI STOCK SEBELUMNYA !"], 200);
-        }
-
-        return response()->json(["success" => "STOCK BERHASIL DIUBAH !"], 200);
-    }
-
-    public function updateStock(Request $request, $id)
-    {
-        // Validasi input
-        $request->validate([
-            'stock' => 'required|integer|min:0',
-        ]);
-
-        // Temukan obat berdasarkan ID
-        $medicine = Medicine::find($id);
-        if (!$medicine) {
-            return response()->json(['error' => 'Obat tidak ditemukan'], 404);
-        }
-
-        // Update stok obat
-        $medicine->stock = $request->stock;
-        $medicine->save();
-
-        return response()->json(['success' => true, 'message' => 'Stok berhasil diupdate!']);
     }
 }

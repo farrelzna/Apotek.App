@@ -8,8 +8,8 @@
                 <!-- Profile Header -->
                 <div class="profile-header text-center shadow-lg">
                     <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-img img-thumbnail">
-                    <h3 class="mb-1">John Doe</h3>
-                    <p class="text-light">Admin</p>
+                    <h3 class="mb-1"></h3>
+                    <p class="text-light">{{ $user->name }}</p>
                 </div>
 
                 <!-- Profile Information Card -->

@@ -1,4 +1,4 @@
-@extends('Templates.app', ['title' => 'Users | APOTEK'])
+@extends('Templates.app', ['title' => 'Users || APOTEK'])
 
 @section('content-dinamis')
     <div class="d-block mxauto my-6 w-auto p-4">
@@ -6,7 +6,7 @@
             <h2>List Users</h2>
             <a href="{{ route('show.account.create') }}" class="btn btn-success mb-3">+ Tambah</a>
         </div>
-
+        
         @if (Session::get('success'))
             <div class="alert alert-success">{{ Session::get('success') }}</div>
         @endif

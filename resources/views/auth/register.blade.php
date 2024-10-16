@@ -1,6 +1,6 @@
-@extends('Templates.register', ['title' => 'Register || Apotek'])
+@extends('Templates.app', ['title' => 'Register || Apotek'])
 
-@section('content')
+@section('content-dinamis')
 
     <body clas`s="bg-light">
         <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">

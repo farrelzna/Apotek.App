@@ -10,12 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
-    public function index()
-    {
-        $users = User::all();
-        return view('account.index', compact('users'));
-    }
-
     public function login(Request $request)
     {
         $request->validate([
@@ -74,38 +68,7 @@ class UsersController extends Controller
         return redirect()->back()->with('error', 'Akun Belum Terdaftar');
     }
 
-    // Menampilkan form register
-    public function create()
-    {
-        return view('auth.register'); // Pastikan view 'page-register' sesuai
-    }
-
-    // Proses registrasi
-    // Proses registrasi
-    public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'name' => 'required|string|max:255', // Menambahkan validasi untuk nama
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed',
-            'role' => 'required',
-        ]);
-
-        // Membuat user baru
-        $user = User::create([
-            'name' => $request->name,  // Menambahkan name
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => $request->role,
-        ]);
-
-        // Login otomatis setelah register
-        Auth::login($user);
-
-        // Redirect ke halaman apotek (medicines)
-        return redirect()->route('login')->with('success', 'Registrasi berhasil, Anda sudah login.');
-    }
+    ///////////////////////////////////////////////////////////////////////////////////
 
     public function createAccount(Request $request)
     {
@@ -135,7 +98,7 @@ class UsersController extends Controller
 
         return redirect()->route('users')->with('success', 'Account created successfully');
     }
-    
+
     public function showCreateAccount()
     {
         return view('account.create');
@@ -148,16 +111,56 @@ class UsersController extends Controller
         return redirect()->route('login')->with('success', 'Logged out successfully.');
     }
 
+    //////////////////////////////////////////////////////////////////////////////////
 
+    public function indexProfile(Request $request)
+    {
+        $user = user::all();
+        return view('account.profile', compact('user'));
+    }
+
+    public function index(Request $request)
+    {
+        $users = User::all();
+        $users = User::where('name', 'like', '%' . $request->search . '%')->orderBy('name', 'asc')->simplePaginate(5);
+        return view('account.index', compact('users'));
+    }
+
+    // Menampilkan form register
+    public function create()
+    {
+        return view('auth.register'); // Pastikan view 'page-register' sesuai
+    }
+
+    // Proses registrasi
+    public function store(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255', // Menambahkan validasi untuk nama
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|confirmed',
+            'role' => 'required',
+        ]);
+
+        // Membuat user baru
+        $user = User::create([
+            'name' => $request->name,  // Menambahkan name
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+        ]);
+
+        // Login otomatis setelah register
+        Auth::login($user);
+
+        // Redirect ke halaman apotek (medicines)
+        return redirect()->route('login')->with('success', 'Registrasi berhasil, Anda sudah login.');
+    }
 
     /**
      * Show the form for creating a new resource.
      */
-
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -195,7 +198,7 @@ class UsersController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'role' => $request->role,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
         ]);
         if ($proses) {
             return redirect()->route('users')->with('success', 'Data Berhasil Diubah');
@@ -217,5 +220,4 @@ class UsersController extends Controller
             return redirect()->back()->with('failed', 'Data Gagal Dihapus');
         }
     }
-
 }

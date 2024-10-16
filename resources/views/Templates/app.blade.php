@@ -24,6 +24,7 @@
     {{-- Navbar --}}
     <nav class="navbar navbar-expand-lg bg-body-tertiary shadow sticky-top p-3" data-bs-theme="dark">
         <div class="container-fluid">
+            @if (Auth::check())
             <a class="navbar-brand fs-3" href="#">Apotek</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                 aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,34 +32,43 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::is('home') ? 'active' : '' }}" aria-current="page"
-                            href="{{ route('home') }}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::is('medicines') ? 'active' : '' }}"
-                            href="{{ route('medicines') }}">Medicine Data</a>
-                    </li>
-                    <li class="nav-item {{ Route::is('medicines') ? 'active' : '' }}">
-                        <a class="nav-link" href="{{ route('medicines') }}">Order</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::is('home') ? 'active' : '' }}" aria-current="page"
+                                href="{{ route('home') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::is('medicines') ? 'active' : '' }}"
+                                href="{{ route('medicines') }}">Medicine Data</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::is('orders') ? 'active' : '' }}"
+                                href="{{ route('orders') }}">Orders</a>
+                        </li>
+                    @endif
                 </ul>
 
-                {{-- Search Bar --}}
-                <form class="d-flex me-auto" role="search" action="{{ route('medicines') }}" method="GET">
-                    <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search"
-                        name="search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+                @if (Auth::check())
+                    {{-- Search Bar --}}
+                    <form class="d-flex me-auto" role="search"
+                        action="{{ request()->routeIs('medicines') ? route('medicines') : route('users') }}"
+                        method="GET">
+                        <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search"
+                            name="search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                    {{-- Akun dan Autentikasi --}}
+                    @if (Auth::user()->role === 'Admin')
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {{ Route::is('users') ? 'active' : '' }}"
+                                href="{{ route('users') }}">Kelola Akun</a>
+                        </li>
+                    </ul>
+                    @endif
+                @endif
 
-                {{-- Akun dan Autentikasi --}}
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link {{ Route::is('users') ? 'active' : '' }}"
-                            href="{{ route('users') }}">Kelola Akun</a>
-                    </li>
-
-                    @guest
+                @guest
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('login') ? 'active' : '' }}" href="{{ route('login') }}">Masuk
                                 Akun</a>
@@ -76,9 +86,9 @@
                                 {{ Auth::user()->name }}
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
-                                <li><a class="dropdown-item" href="#">Action two</a></li>
-                                <li><a class="dropdown-item" href="#"
+                                <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Contact</a></li>
+                                <li><a class="dropdown-item" href="/Logout"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                 </li>
                             </ul>
@@ -103,7 +113,6 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
     @stack('script')
 </body>
 

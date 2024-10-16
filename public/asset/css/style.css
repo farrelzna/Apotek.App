@@ -37,9 +37,11 @@ footer {
     justify-content: center;
     align-content: center;
 }
+
 ::-webkit-input-placeholder {
     color: #eee;
 }
+
 .wrapper {
     position: relative;
     width: 800px;

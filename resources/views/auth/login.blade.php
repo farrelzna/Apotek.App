@@ -1,9 +1,7 @@
-@extends('Templates.register', ['title' => 'Login || Apotek'])
+@extends('Templates.app', ['title' => 'Login || Apotek'])
 
-@section('content')
-
-    <body class="bg-light">
-        <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+@section('content-dinamis')
+        <div class="container d-flex justify-content-center align-items-center" style="height: 85vh;">
             <div class="card shadow-lg" style="width: 100%; max-width: 600px;">
                 <div class="card-header bg-primary text-white text-center">
                     <h4 class="text-center">Sign In</h4>
@@ -36,11 +34,4 @@
                 </div>
             </div>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-        </script>
-    </body>
-
-    </html>
 @endsection

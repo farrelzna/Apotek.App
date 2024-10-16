@@ -16,6 +16,13 @@
             @error('name')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
+            <div class="form-group">
+                <label for="description" class="form-label">Deskripsi</label>                
+                <input type="text" name="description" id="description" class="form-control" value={{ old('name') }}>
+            </div>
+            @error('description')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
             <div class="form-group mt-3">
                 <label for="type" class="form-label">Tipe Obat</label>
                 <select name="type" id="type" class="form-control">

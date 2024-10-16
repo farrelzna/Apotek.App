@@ -17,10 +17,11 @@ return new class extends Migration
             //membuat primary key dengan nama id dan sifatnya ai (auto increment)
             $table->id();
             //$table->tipedata('nama_field');
-            $table->enum('type',['tablet', 'sirup', 'kapsul']);
             $table->string('name');
-            $table->integer('price');
+            $table->enum('type',['Tablet', 'Sirup', 'Kapsul']);
+            $table->text('description');
             $table->integer('stock');
+            $table->integer('price');
             //membuat created at dan updated at
             $table->timestamps();
         });
