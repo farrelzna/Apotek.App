@@ -19,9 +19,9 @@ class UsersController extends Controller
         ], [
             'name.required' => 'NAMA HARUS DI ISI !',
             'name.min' => 'NAMA TERLALU PENDEK!',
-            'password.min' => 'NAMA TERLALU PENDEK!',
             'email.required' => 'EMAIL HARUS DI ISI!',
             'email.unique' => 'EMAIL SUDAH TERDAFTAR!',
+            'password.min' => 'NAMA TERLALU PENDEK!',
             'password.required' => 'PASSWORD HARUS DI ISI!',
         ]);
 
@@ -75,15 +75,16 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required|string|max:255', // Validasi untuk nama
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:5', // Validasi untuk password dengan konfirmasi
+            'password' => 'required_with:password_confirmation|same:password_confirmation|min:5', // Validasi untuk password dengan konfirmasi
+            'password_confirmation' => 'required|min:5', // Validasi untuk konfirmasi password
             'role' => 'required',
         ], [
             'name.required' => 'NAMA HARUS DIISI!',
             'email.required' => 'EMAIL HARUS DIISI!',
             'email.unique' => 'EMAIL SUDAH TERDAFTAR!',
-            'password.required' => 'PASSWORD HARUS DIISI!',
             'password.confirmed' => 'PASSWORD DAN KONFIRMASI PASSWORD TIDAK SESUAI!',
-            'password.min' => 'PASSWORD HARUS MINIMAL 6 KARAKTER!',
+            'password.min' => 'PASSWORD HARUS MINIMAL 5 KARAKTER!',
+            'role.required' => 'ROLE HARUS DIISI!',
         ]);
 
         $user = User::create([
@@ -91,12 +92,13 @@ class UsersController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => $request->password,
+            'password-confirmation' => $request->password_confirmation,
             'role' => $request->role,
         ]);
 
         Auth::login($user);
 
-        return redirect()->route('users')->with('success', 'Account created successfully');
+        return redirect()->route('users')->with('success', 'Akun Berhasil Dibuat');
     }
 
     public function showCreateAccount()
@@ -108,7 +110,7 @@ class UsersController extends Controller
     public function logout()
     {
         Auth::logout();  // Logout menggunakan facade Auth
-        return redirect()->route('login')->with('success', 'Logged out successfully.');
+        return redirect()->route('login')->with('success', 'Anda sudah logout.');
     }
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -155,7 +157,7 @@ class UsersController extends Controller
         Auth::login($user);
 
         // Redirect ke halaman apotek (medicines)
-        return redirect()->route('login')->with('success', 'Registrasi berhasil, Anda sudah login.');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil, silahkan login.');
     }
 
     /**
@@ -179,16 +181,15 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required | min:5',
+            'name' => 'requireD',
             'email' => 'required |min:5',
             'password' => 'required |min:5',
             'role' => 'required',
         ], [
             'name.required' => 'NAMA HARUS DI ISI !',
-            'name.min' => 'NAMA TERLALU PENDEK!',
-            'password.min' => 'NAMA TERLALU PENDEK!',
             'email.required' => 'EMAIL HARUS DI ISI!',
             'email.min' => 'EMAIL MINIMAL 5 KARAKTER!',
+            'password.min' => 'PASSWORD TERLALU PENDEK!',
             'password.required' => 'PASSWORD HARUS DI ISI!',
         ]);
 

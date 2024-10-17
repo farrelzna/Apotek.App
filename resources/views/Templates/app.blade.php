@@ -36,10 +36,12 @@
                             <a class="nav-link {{ Route::is('home') ? 'active' : '' }}" aria-current="page"
                                 href="{{ route('home') }}">Home</a>
                         </li>
+                        @if (Auth::user()->role === 'Apoteker')
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('medicines') ? 'active' : '' }}"
                                 href="{{ route('medicines') }}">Medicine Data</a>
                         </li>
+                        @endif
                         <li class="nav-item">
                             <a class="nav-link {{ Route::is('orders') ? 'active' : '' }}"
                                 href="{{ route('orders') }}">Orders</a>

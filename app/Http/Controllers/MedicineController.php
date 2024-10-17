@@ -99,7 +99,7 @@ class MedicineController extends Controller
 
         $request->validate([
             'name' => 'required|min:5|max:20',
-            'description' => 'required|min:5|max:100',
+            'description' => 'required|min:1|max:100',
             'type' => 'required',
             'stock' => 'required',
             'price' => 'required|numeric',
@@ -164,7 +164,7 @@ class MedicineController extends Controller
         $request->validate([
             'name' => 'required|min:5|max:20',
             'type' => 'required',
-            'description' => 'required|min:5|max:`100',
+            'description' => 'required',
             'stock' => 'required',
             'price' => 'required|numeric',
         ], [

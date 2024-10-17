@@ -32,32 +32,35 @@ use App\Http\Controllers\UsersController;
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 //  Route yang dilindungi oleh middleware auth (hanya bisa diakses jika login)
-Route::middleware(['isLogin'])->group(function () {
 
-    //mengolola data medicines
+Route::middleware('isLogin')->group(function () {
 
-    Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
-    Route::get('/medicines/add', [MedicineController::class, 'create'])->name('medicines.add');
-    Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medicines.add.store');
-    Route::get('/medicines/edit/{id}', [MedicineController::class, 'edit'])->name('medicines.edit');
-    Route::patch('/medicines/edit{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
-    Route::put('/medicines/update-stock/{id}', [MedicineController::class, 'stockEdit'])->name('medicines.stock.edit');
-    Route::delete('/medicines/delete{id}', [MedicineController::class, 'destroy'])->name('medicines.delete');
+
+    Route::middleware('isAdmin')->group(function () {
+        //mengolola data medicines
+        Route::get('/users', [UsersController::class, 'index'])->name('users');
+        Route::get('/users/add', [UsersController::class, 'showCreateAccount'])->name('show.account.create');
+        Route::post('/users/add', [UsersController::class, 'createAccount'])->name('create.account');
+        Route::get('/users/edit/{id}', [UsersController::class, 'edit'])->name('users.edit');
+        Route::patch('/users/edit{id}', [UsersController::class, 'update'])->name('users.edit.update');
+        Route::delete('/users/delete{id}', [UsersController::class, 'destroy'])->name('users.delete');
+        Route::get('/profile', [UsersController::class, 'indexProfile'])->name('profile');
+    });
+
+    Route::middleware(['isApoteker'])->group(function () {
+        Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
+        Route::get('/medicines/add', [MedicineController::class, 'create'])->name('medicines.add');
+        Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medicines.add.store');
+        Route::get('/medicines/edit/{id}', [MedicineController::class, 'edit'])->name('medicines.edit');
+        Route::patch('/medicines/edit{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
+        Route::put('/medicines/update-stock/{id}', [MedicineController::class, 'stockEdit'])->name('medicines.stock.edit');
+        Route::delete('/medicines/delete{id}', [MedicineController::class, 'destroy'])->name('medicines.delete');
+    });
     Route::get('/orders', [MedicineController::class, 'indexOrders'])->name('orders');
-
-    //  mengolola data users 
-
-    Route::get('/users', [UsersController::class, 'index'])->name('users');
-    Route::get('/users/add', [UsersController::class, 'showCreateAccount'])->name('show.account.create');
-    Route::post('/users/add', [UsersController::class, 'createAccount'])->name('create.account');
-    Route::get('/users/edit/{id}', [UsersController::class, 'edit'])->name('users.edit');
-    Route::patch('/users/edit{id}', [UsersController::class, 'update'])->name('users.edit.update');
-    Route::delete('/users/delete{id}', [UsersController::class, 'destroy'])->name('users.delete');
-    Route::get('/profile', [UsersController::class, 'indexProfile'])->name('profile');
 });
 
 
-//  mengolola data users
+//  Login & Register
 Route::get('/', [UsersController::class, 'showLogin'])->name('login');
 Route::get('/register', [UsersController::class, 'create'])->name('register.show');
 Route::post('/register', [UsersController::class, 'store'])->name('register.process');
