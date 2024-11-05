@@ -50,11 +50,12 @@ class MedicineController extends Controller
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public function indexOrders(Request $request)
+    public function indexshowList(Request $request)
     {
         $medicine = Medicine::all(); // Mengambil semua data dari tabel obats
+        $medicines = Medicine::where('name', 'like', '%' . $request->search . '%')->orderBy('name', 'asc')->simplePaginate(5);
 
-        return view('medicine.order', compact('medicine'));
+        return view('medicine.showList', compact('medicine'));
     }
 
    ///////////////////////////////////////////////////////////////////////////////////////////////////

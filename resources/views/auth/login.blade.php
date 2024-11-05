@@ -29,7 +29,7 @@
                     </form>
 
                     <div class="text-center mt-3">
-                        <a class="link-opacity-75-hover" href="{{ route('register.show') }}">Belum punya akun? Register di sini</a>
+                        <a class="link-opacity-75-hover" href="{{ route('register.show') }}">   Don't have an account yet? Register here</a>
                     </div>
                 </div>
             </div>

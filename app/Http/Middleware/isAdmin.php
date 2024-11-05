@@ -16,7 +16,7 @@ class isAdmin
     public function handle(Request $request, Closure $next): Response
     {
         if (!auth()->check() || auth()->user()->role !== 'Admin') {
-            return redirect()->route('home')->with('error', 'Silahkan Login Terlebih Dahulu');
+            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses');
         }
 
         return $next($request);

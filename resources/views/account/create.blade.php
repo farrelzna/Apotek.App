@@ -4,7 +4,7 @@
 @section('content-dinamis')
 
     <div class="m-auto" style="width:60%">
-        <form class="p-5 mt-2" style="border: 1px solid white;" action="{{ route('show.account.create') }}" method="POST">
+        <form class="p-5 mt-3" style="border: 1px solid white;" action="{{ route('show.account.create') }}" method="POST">
 
             {{-- memunculkan teks dari with (''failed) --}}
             @if (Session::get('failed'))
@@ -31,7 +31,7 @@
 
             @csrf
             <div>
-                <label for="name" class="form-label ">Nama</label>
+                <label for="name" class="form-label ">Name</label>
                 <input type="text" name="name" id="name" class="form-control">
             </div>
             <div>
@@ -50,13 +50,13 @@
 
                 <label for="name" class="form-label">Role</label>
                 <select name="role" id="role" class="form-select">
-                    <option hidden selected disabled>Pilih</option>
+                    <option hidden selected disabled>Select</option>
                     <option value="admin">Admin</option>
-                    <option value="kasir">Kasir</option>
-                    <option value="users">Pengguna</option>
+                    <option value="apoteker">Apoteker</option>
+                    <option value="users">User</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-success mt-3">Kirim Data</button>
+            <button type="submit" class="btn btn-success mt-3">Submit</button>
         </form>
     </div>
 @endsection

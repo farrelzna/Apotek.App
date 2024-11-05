@@ -4,10 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
-class isApoteker
+class isGuest
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,11 @@ class isApoteker
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->role !== 'Apoteker') {
-            return redirect()->route('home')->with('error', 'Anda tidak memiliki akses');
+        if (Auth::check()) {
+            return redirect()->route('home')->with('success','Anda telah login');
+        } else {
+            return $next($request);
         }
-
-        return $next($request);
     }
+
 }

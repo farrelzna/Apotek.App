@@ -1,10 +1,13 @@
-@extends('Templates.app', ['title' => 'Order || Apotek'])
+@extends('Templates.app', ['title' => 'Show List || Apotek'])
 
 @section('content-dinamis')
     <div class="d-block mxauto my-6 w-auto p-4">
         <div class="d-flex justify-content-between align-items-center">
-            <h2>Orders</h2>
-            <a href="{{ route('medicines.add') }}" class="btn btn-success mb-3">+ Tambah</a>
+            <h2>List Medicine</h2>
+            @if (Auth::user()->role === 'Apoteker')
+                <a class="btn btn-success {{ Route::is('orders.create') ? 'active' : '' }}"
+                    href="{{ route('orders.create') }}">Order</a>
+            @endif
         </div>
     </div>
 
@@ -17,7 +20,7 @@
         </div>
         <div class="row mb-4"> {{-- Menutup row lama dan membuka row baru --}}
             @endif
-            <div class="col-md-6 mb-4"> {{-- Kolom yang berisi satu card --}}
+            <div class="col-md mb-4"> {{-- Kolom yang berisi satu card --}}
                 <div class="card align-middle d-flex justify-content-around" style="width: 100%;">
                     <img src="" class="card-img-top" alt="...">
                     <div class="card-body">

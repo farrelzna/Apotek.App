@@ -6,10 +6,9 @@
             <div class="col-md-8">
 
                 <!-- Profile Header -->
-                <div class="profile-header text-center shadow-lg">
+                <div class="profile-header text-center rounded-bottom shadow-lg p-4">
                     <img src="https://via.placeholder.com/150" alt="Profile Picture" class="profile-img img-thumbnail">
-                    <h3 class="mb-1"></h3>
-                    <p class="text-light">{{ $user->name }}</p>
+                    <p class="text-dark">  {{ Auth::user()->name }} </p>
                 </div>
 
                 <!-- Profile Information Card -->
@@ -21,7 +20,7 @@
                             <strong>Name:</strong>
                         </div>
                         <div class="col-sm-8">
-                            John Doe
+                            {{ Auth::user()->name }}
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -29,7 +28,7 @@
                             <strong>Email:</strong>
                         </div>
                         <div class="col-sm-8">
-                            johndoe@example.com
+                            {{ Auth::user()->email }}
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -37,12 +36,12 @@
                             <strong>Role:</strong>
                         </div>
                         <div class="col-sm-8">
-                            Admin
+                            {{ Auth::user()->role }}
                         </div>
                     </div>
 
                     <div class="text-center mt-4">
-                        <a href="#" class="btn btn-edit-profile">Edit Profile</a>
+                        <a href="{{ route('users.edit', Auth::user()->id) }}" class="btn btn-primary me-3">Edit Profile</a>
                     </div>
                 </div>
 

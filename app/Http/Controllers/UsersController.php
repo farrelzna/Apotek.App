@@ -103,7 +103,8 @@ class UsersController extends Controller
 
     public function showCreateAccount()
     {
-        return view('account.create');
+        $users = User::all();
+        return view('account.create', compact('users'));
     }
 
     // Proses logout
@@ -117,8 +118,8 @@ class UsersController extends Controller
 
     public function indexProfile(Request $request)
     {
-        $user = user::all();
-        return view('account.profile', compact('user'));
+        $users = User::all();
+        return view('account.profile', compact('users'));
     }
 
     public function index(Request $request)

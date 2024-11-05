@@ -17,33 +17,4 @@ class HomeController extends Controller
         return view('home');
     }
 
-    public function create()
-    {
-        //  menampilkan form tambah data
-    }
-
-    public function store(Request $request)
-    {
-        //  menyimpan data baru
-    }
-
-    public function show(string $id)
-    {
-        //  menampilkan hanya satu data
-    }
-
-    public function edit(string $id)
-    {
-        //  menampilkan form edit
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //  mengubah data ke database
-    }
-
-    public function destroy(string $id)
-    {
-        //  menghapus data dari database
-    }
 }

@@ -16,7 +16,7 @@ class isUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::user()->role == 'Users') {
+        if (Auth::user()->role !== 'Users') {
             return redirect()->route('home')->with('error');
         }
         return $next($request);

@@ -5,8 +5,7 @@
         <div class="alert alert-danger">{{ Session::get('failed') }}</div>
     @endif
 
-
-    <div class="mt-5 m-auto my-6 w-auto p-4" style="width:65%;">
+    <div class="mt-3 m-auto my-6 w-auto p-4" style="width:65%;">
 
         <form action="{{ route('users.edit.update', $users['id']) }}" method="POST" class="p-4 mt-2"
             style="border-radius: 10px; box-shadow:-20px -20px 60px rgba(0, 0, 0, 0.24);">

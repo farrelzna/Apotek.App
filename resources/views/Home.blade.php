@@ -1,4 +1,4 @@
-@extends('Templates.app', ['title' => 'Home II Apotek'])
+@extends('Templates.app', ['title' => 'Home || Apotek'])
 
 {{--  
     extends = memanggil file bladenya
@@ -6,9 +6,17 @@
     pemanggilnya = folder.file
 --}}
 
+
+
 @section('content-dinamis')
     <!-- Hero Section -->
-
+    @if (Session::get('success'))
+        <div class="alert alert-success mb-0">{{ Session::get('success') }}</div>
+    @endif
+    @if (Session::get('error'))
+        <div class="alert alert-danger mb-0">{{ Session::get('error') }}</div>
+    @endif
+    
     <section class="hero">
         <div class="container">
             <h1>Aplikasi Apotek Modern</h1>

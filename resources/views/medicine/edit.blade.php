@@ -1,8 +1,14 @@
-@extends('Templates.app', ['title' => 'Edit Obat II Apotek'])
+@extends('Templates.app', ['title' => 'Edit Obat || Apotek'])
 
 @section('content-dinamis')
-    <div class="mt-5 m-auto my-6 w-auto p-4" style="width: 65%;">
-        <form action="{{ route('medicines.edit.update', $medicine['id']) }}" method="POST" class="p-4 mt-2" style="border-radius: 10px; box-shadow:-20px -20px 60px #bebebe;">
+    @if (Session::get('failed'))
+        <div class="alert alert-danger">{{ Session::get('failed') }}</div>
+    @endif
+
+    <div class="mt-3 m-auto my-6 w-auto p-4" style="width: 65%;">
+        
+        <form action="{{ route('medicines.edit.update', $medicine['id']) }}" method="POST" class="p-4 mt-2"
+            style="border-radius: 10px; box-shadow:-20px -20px 60px #bebebe;">
             @if (Session::get('failed'))
                 <div class="alert alert-danger">{{ Session::get('failed') }}</div>
             @endif
@@ -17,7 +23,7 @@
                 <small class="text-danger">{{ $message }}</small>
             @enderror
             <div class="form-group">
-                <label for="description" class="form-label">Deskripsi</label>                
+                <label for="description" class="form-label">Deskripsi</label>
                 <input type="text" name="description" id="description" class="form-control" value={{ old('name') }}>
             </div>
             @error('description')
