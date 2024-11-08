@@ -48,16 +48,6 @@ class MedicineController extends Controller
         return response()->json(['success' => true, 'message' => 'Stok berhasil diupdate!']);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-
-    public function indexshowList(Request $request)
-    {
-        $medicine = Medicine::all(); // Mengambil semua data dari tabel obats
-        $medicines = Medicine::where('name', 'like', '%' . $request->search . '%')->orderBy('name', 'asc')->simplePaginate(5);
-
-        return view('medicine.showList', compact('medicine'));
-    }
-
    ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     //  Request $request = mengambil semua data dari form yang dikirim ke action yg terhubung dengan func ini
@@ -76,10 +66,13 @@ class MedicineController extends Controller
         //  orderby : mengurutkan berdasarkan field migration terntentu
         //  ASC : ascending (kecil ke besar);
         //  DSC : descending (besar ke kecil);
-        $medicines = Medicine::where('name', 'like', '%' . $request->search . '%')->orderBy('name', 'asc')->simplePaginate(5);
+        // Mengambil semua data dari tabel obats
 
+        $medicines = Medicine::where('name', 'like', '%' . $request->search . '%')->orderBy('name', 'asc')->simplePaginate(6);
+        $totalProduct = Medicine::distinct('name')->count('name');
+        
         //compact : mengirim data ke blade : compact('namavariable')
-        return view('medicine.index', compact('medicines'));
+        return view('medicine.index', compact('medicines', 'totalProduct'));
     }
 
     /**

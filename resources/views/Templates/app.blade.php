@@ -25,7 +25,6 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary shadow sticky-top p-3" data-bs-theme="dark">
         <div class="container-fluid">
             @if (Auth::check())
-
                 <a class="navbar-brand fs-3" href="#">Apotek</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
                     aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,37 +37,35 @@
                                 href="{{ route('home') }}">Home</a>
                         </li>
 
-                        @if (Auth::user()->role === 'Apoteker')
-                            <li class="nav-item">
-                                <a class="nav-link {{ Route::is('medicines') ? 'active' : '' }}"
-                                    href="{{ route('medicines') }}">Medicine</a>
-                            </li>
-                        @endif
-
                         <li class="nav-item">
-                            <a class="nav-link {{ Route::is('showList') ? 'active' : '' }}"
-                                href="{{ route('showList') }}">ShowList</a>
+                            <a class="nav-link {{ Route::is('medicines') ? 'active' : '' }}"
+                                href="{{ route('medicines') }}">Medicine</a>
                         </li>
 
+                        @if (Auth::user()->role === 'Apoteker')
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('orders') ? 'active' : '' }}"
+                                    href="{{ route('orders') }}">Orders</a>
+                            </li>
+                        @endif
+                        @if (Auth::user()->role === 'Admin')
+                            <li class="nav-item">
+                                <a class="nav-link {{ Route::is('orders') ? 'active' : '' }}"
+                                    href="{{ route('orders.admin') }}">Data Pembelian</a>
+                            </li>
+                        @endif
             @endif
             </ul>
 
             @if (Auth::check())
                 {{-- Search Bar --}}
                 <form class="d-flex me-auto" role="search"
-                    action="{{ request()->routeIs('medicines') ? route('medicines') : route('users') }}" method="GET">
+                    action="{{ request()->routeIs('medicines') ? route('medicines') : route('users') }}"
+                    method="GET">
                     <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search"
                         name="search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
-
-                {{-- Akun dan Autentikasi --}}
-
-
-
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    
-                </ul>
             @endif
 
             @guest
@@ -95,9 +92,11 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
+
                             @if (Auth::user()->role === 'Admin')
                                 <li><a class="dropdown-item" href="{{ route('users') }}">Data User</a></li>
                             @endif
+
                             <li><a class="dropdown-item" href="#">Settings</a></li>
                             <li><a class="dropdown-item" href="/Logout"
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>

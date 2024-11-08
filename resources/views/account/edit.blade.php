@@ -8,7 +8,7 @@
     <div class="mt-3 m-auto my-6 w-auto p-4" style="width:65%;">
 
         <form action="{{ route('users.edit.update', $users['id']) }}" method="POST" class="p-4 mt-2"
-            style="border-radius: 10px; box-shadow:-20px -20px 60px rgba(0, 0, 0, 0.24);">
+            style="border-radius: 10px; box-shadow:-20px -20px 60px rgba(0, 0, 0, 0.20);">
             @csrf
             @method('PATCH')
 
@@ -51,7 +51,7 @@
                 {{-- $message == memunculkan eror terkait dengan stock --}}
                 <small class="text-danger">{{ $message }}</small>
             @enderror
-            <button type="submit" class="btn btn-light mt-4">Ubah Data</button>
+            <button type="submit" class="btn btn-success mt-4">Ubah Data</button>
         @endsection
 
     </form>

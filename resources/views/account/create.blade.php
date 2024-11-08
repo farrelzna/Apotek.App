@@ -1,4 +1,4 @@
-@extends('Templates.app', ['title' => 'CreateAccount || Apotek '])
+@extends('Templates.app', ['title' => 'Create Account || Apotek '])
 
 
 @section('content-dinamis')

@@ -15,22 +15,43 @@
                     <form action="{{ route('register.process') }}" method="POST">
                         @csrf
 
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" name="name" id="name" required class="form-control"
-                                placeholder="Enter Your name">
-                            @if ($errors->has('name'))
-                                <div class="text-danger mt-1">{{ $errors->first('name') }}</div>
-                            @endif
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" name="name" id="name" required class="form-control"
+                                    placeholder="Enter Your name">
+                                @if ($errors->has('name'))
+                                    <div class="text-danger mt-1">{{ $errors->first('name') }}</div>
+                                @endif
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" name="email" id="email" required class="form-control"
+                                    placeholder="Enter Your email">
+                                @if ($errors->has('email'))
+                                    <div class="text-danger mt-1">{{ $errors->first('email') }}</div>
+                                @endif
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" name="email" id="email" required class="form-control"
-                                placeholder="Enter Your email">
-                            @if ($errors->has('email'))
-                                <div class="text-danger mt-1">{{ $errors->first('email') }}</div>
-                            @endif
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" name="password" id="password" required class="form-control"
+                                    placeholder="Enter Your password">
+                                @if ($errors->has('password'))
+                                    <div class="text-danger mt-1">{{ $errors->first('password') }}</div>
+                                @endif
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="password_confirmation" class="form-label">Confirm Password</label>
+                                <input type="password" name="password_confirmation" id="password_confirmation" required
+                                    class="form-control" placeholder="Confirm Your password">
+                                @if ($errors->has('password_confirmation'))
+                                    <div class="text-danger mt-1">{{ $errors->first('password_confirmation') }}</div>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -42,24 +63,6 @@
                             </select>
                             @if ($errors->has('role'))
                                 <div class="text-danger mt-1">{{ $errros->first('email') }}</div>
-                            @endif
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input type="password" name="password" id="password" required class="form-control"
-                                placeholder="Enter Your password">
-                            @if ($errors->has('password'))
-                                <div class="text-danger mt-1">{{ $errors->first('password') }}</div>
-                            @endif
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm Password</label>
-                            <input type="password" name="password_confirmation" id="password_confirmation" required
-                                class="form-control" placeholder="Confirm Your password">
-                            @if ($errors->has('password_confirmation'))
-                                <div class="text-danger mt-1">{{ $errors->first('password_confirmation') }}</div>
                             @endif
                         </div>
 

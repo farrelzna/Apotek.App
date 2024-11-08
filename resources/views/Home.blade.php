@@ -50,28 +50,28 @@
     <!-- Testimoni Section -->
 
     <section class="py-5">
-        <div class="container text-center">
+        <div class="container text-center rounded">
             <h2 class="mb-5">Testimoni Pengguna</h2>
-            <div class="row mt-5">
-                <div class="col-md-4 p-3 mb-2">
+            <div class="row mt-5 d-flex justify-content-around">
+                <div class="card col-md-4 p-4 mb-2" style="width: 22rem;">
                     <blockquote class="blockquote">
                         <p>"ApotekApp telah sangat membantu kami dalam mengelola stok dan pelanggan. Sangat user-friendly
                             dan cepat!"</p>
-                        <footer class="blockquote-footer mt-2">Andi, Apotek Sejahtera</footer>
+                        <footer class="blockquote-footer mt-2 rounded text-light">Andi, Apotek Sejahtera</footer>
                     </blockquote>
                 </div>
-                <div class="col-md-4 p-3 mb-2">
+                <div class="card col-md-4 p-4 mb-2" style="width: 22rem;">
                     <blockquote class="blockquote">
                         <p>"Dengan ApotekApp, pengelolaan transaksi menjadi jauh lebih cepat, efisien, dan aman. Sangat
                             direkomendasikan!"</p>
-                        <footer class="blockquote-footer mt-3">Rina, Apotek Keluarga</footer>
+                        <footer class="blockquote-footer mt-3 rounded text-light">Rina, Apotek Keluarga</footer>
                     </blockquote>
                 </div>
-                <div class="col-md-4 p-3 mb-2">
+                <div class="card col-md-4 p-4 mb-2" style="width: 22rem;">
                     <blockquote class="blockquote">
                         <p>"Aplikasi ApotekApp ini sangat membantu bisnis kami menjadi lebih efisien dan terorganisir. Kami
                             sangat senang!"</p>
-                        <footer class="blockquote-footer mt-3">Budi, Apotek Maju</footer>
+                        <footer class="blockquote-footer mt-3 rounded text-light">Budi, Apotek Maju</footer>
                     </blockquote>
                 </div>
             </div>
@@ -80,7 +80,7 @@
 
     <!-- FAQ Section -->
 
-    <section class="py-5 bg-light">
+    <section class="py-5" style="background: #E9ECEF">
         <div class="container">
             <h2 class="text-center">Pertanyaan yang Sering Diajukan (FAQ)</h2>
             <div class="accordion mt-4" id="faqAccordion">

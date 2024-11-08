@@ -50,28 +50,29 @@ Route::middleware('isLogin')->group(function () {
         Route::delete('/users/delete{id}', [UsersController::class, 'destroy'])->name('users.delete');
         Route::patch('/users/edit{id}', [UsersController::class, 'update'])->name('users.edit.update');
         Route::get('/users/add', [UsersController::class, 'showCreateAccount'])->name('show.account.create');
-        
-        // Route::middleware(['isApoteker'])->group(function () {
-            // });
-        });
-        
-        Route::middleware('isApoteker')->group(function () {        
-            Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
-            Route::get('/medicines/add', [MedicineController::class, 'create'])->name('medicines.add');
-            Route::get('/medicines/edit/{id}', [MedicineController::class, 'edit'])->name('medicines.edit');
-            Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medicines.add.store');
-            Route::delete('/medicines/delete{id}', [MedicineController::class, 'destroy'])->name('medicines.delete');
-            Route::patch('/medicines/edit{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
-            Route::put('/medicines/update-stock/{id}', [MedicineController::class, 'stockEdit'])->name('medicines.stock.edit');
-            
-            Route::get('/orders', [OrderController::class, 'create'])->name('orders.create');
-            Route::get('/orders/struk/{id}', [OrderController::class, 'show'])->name('orders.show');
-            Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
-        });
-        
-    Route::get('/profile', [UsersController::class, 'indexProfile'])->name('profile');
-    Route::get('/showList', [MedicineController::class, 'indexShowList'])->name('showList');
 
+        Route::get('/orders/admin', [OrderController::class, 'indexAdmin'])->name('orders.admin');
+        Route::get('/orders/export/excel', [OrderController::class, 'exportExcel'])->name('orders.export.excel');   
+    });
+
+    Route::middleware('isApoteker')->group(function () {
+        Route::get('/medicines/add', [MedicineController::class, 'create'])->name('medicines.add');
+        Route::get('/medicines/edit/{id}', [MedicineController::class, 'edit'])->name('medicines.edit');
+        Route::post('/medicines/add', [MedicineController::class, 'store'])->name('medicines.add.store');
+        Route::delete('/medicines/delete{id}', [MedicineController::class, 'destroy'])->name('medicines.delete');
+        Route::patch('/medicines/edit{id}', [MedicineController::class, 'update'])->name('medicines.edit.update');
+        Route::put('/medicines/update-stock/{id}', [MedicineController::class, 'stockEdit'])->name('medicines.stock.edit');
+
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders');
+        Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+        Route::post('/orders/store', [OrderController::class, 'store'])->name('orders.store');
+        Route::get('/orders/struk/{id}', [OrderController::class, 'show'])->name('orders.show');
+        Route::get('/download/{id}', [OrderController::class, 'downloadPDF'])->name('orders.downloadPDF');
+    });
+
+    Route::get('/medicines', [MedicineController::class, 'index'])->name('medicines');
+
+    Route::get('/profile', [UsersController::class, 'indexProfile'])->name('profile');
 });
 
 Route::post('/logout', [UsersController::class, 'logout'])->name('logout');

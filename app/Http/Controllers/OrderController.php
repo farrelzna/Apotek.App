@@ -2,13 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Medicine;
+use Carbon\Carbon;
 use App\Models\Order;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Medicine;
 use Illuminate\Http\Request;
+use App\Exports\OrdersExport;
+use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf as domPDF;
+
 
 class OrderController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        // Ambil input pencarian
+        $searchDate = $request->search;
+
+        if ($searchDate) {
+            // Mengonversi searchDate menjadi format 'Y-m-d' menggunakan Carbon
+            $formattedSearchDate = Carbon::parse($searchDate)->format('Y-m-d');
+
+            // Mencari berdasarkan tanggal yang diformat
+            $orders = Order::whereDate('created_at', '=', $formattedSearchDate)->simplePaginate(5);
+        } else {
+            // Jika tidak ada pencarian tanggal, tampilkan semua order
+            $orders = Order::simplePaginate(5);
+        }
+
+        return view('order.index', compact('orders'));
+    }
+
+    public function indexAdmin(Request $request)
+    {
+        // Ambil input pencarian
+        $searchDate = $request->search;
+
+        if ($searchDate) {
+            // Mengonversi searchDate menjadi format 'Y-m-d' menggunakan Carbon
+            $formattedSearchDate = Carbon::parse($searchDate)->format('Y-m-d');
+
+            // Mencari berdasarkan tanggal yang diformat
+            $orders = Order::whereDate('created_at', '=', $formattedSearchDate)->simplePaginate(5);
+        } else {
+            // Jika tidak ada pencarian tanggal, tampilkan semua order
+            $orders = Order::simplePaginate(5);
+        }
+
+
+        return view('order.admin.rekapData', compact('orders'));
+    }
+
+    public function exportExcel()
+    {
+        return Excel::download(new OrdersExport, 'orders.xlsx');
+    }
+
     public function create()
     {
         $medicines = Medicine::where('stock', '>', 0)->get();
@@ -63,7 +113,29 @@ class OrderController extends Controller
                 ]);
             }
 
-            return redirect()->back()->with('success', 'Order Berhasil Ditambahkan');
+            return redirect()->route('orders.show', $addOrder)->with('success', 'Order Berhasil Ditambahkan');
         }
+    }
+
+    public function show($id)
+    {
+        $order = Order::find($id);
+        return view('order.print', compact('order'));
+    }
+
+    public function downloadPdf($id)
+    {
+        //kita bakal mengambil data order yang nanti diubah menjadi array
+
+        $order = Order::find($id)->toArray();
+
+        //agar data order bisa kita kasih menggunakan share
+        view()->share('order', $order);
+        //ambil halaman tujuan kita
+
+        $pdf = domPDF::loadView('order.downloadPDF', $order);
+
+        //tinggal buat agar di download
+        return $pdf->download('invoice.pdf');
     }
 }
